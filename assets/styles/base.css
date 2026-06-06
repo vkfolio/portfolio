@@ -85,6 +85,7 @@ html, body { min-height: 100%; }
 html {
   background: var(--bg);
   color-scheme: light dark;
+  overflow-x: hidden;
 }
 
 body {
@@ -152,18 +153,18 @@ img, svg { display: block; max-width: 100%; }
 
 .topbar__mark {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--ink);
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
 }
 
 .topbar__mark .dot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   background: var(--accent);
   border-radius: 50%;
   display: inline-block;
@@ -359,7 +360,7 @@ img, svg { display: block; max-width: 100%; }
 
 @media (max-width: 720px) {
   :root {
-    --gutter: 20px;
+    --gutter: 24px;
     --s-9: 56px;
     --s-10: 72px;
     --s-11: 88px;
