@@ -40,7 +40,7 @@
     },
     'who built this': {
       title: 'Who built this?',
-      body: `<p>Me — <a href="/about.html">Vignesh Karnika</a>. Lead architect by day, OSS tools by night. Olla Chat is one of <a href="/">eight rooms</a> in this workshop.</p>
+      body: `<p>Me — <a href="/about.html">Vignesh K</a>. Lead architect by day, OSS tools by night. Olla Chat is one of <a href="/">eight rooms</a> in this workshop.</p>
 <p>If you want the longer answer to "why I build small tools instead of one big one", that's in the <a href="/notes/why-i-built-sable.html">Sable field note</a>.</p>`,
       next: ['what is olla chat', 'why local models'],
     },
