@@ -51,6 +51,18 @@
 .vc__status span { display: inline-flex; align-items: center; gap: 7px; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--live); box-shadow: 0 0 7px var(--live); display: inline-block; }
 
+.vc__visit {
+  display: inline-flex; align-items: center;
+  margin-top: 18px;
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: #fff; background: var(--accent);
+  padding: 11px 18px; border-radius: 10px;
+  transition: transform var(--ease), background var(--ease), box-shadow var(--ease);
+  box-shadow: 0 14px 30px -14px color-mix(in oklch, var(--accent) 60%, transparent);
+}
+.vc__visit:hover { transform: translateY(-2px); background: var(--accent-hover, var(--accent)); }
+[data-theme="dark"] .vc__visit { color: #0F0E17; }
+
 /* console screenshot frame */
 .vc__console {
   margin: 0 0 var(--s-7);
