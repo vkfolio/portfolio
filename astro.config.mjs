@@ -7,7 +7,7 @@ export default defineConfig({
   integrations: [mdx()],
   trailingSlash: 'ignore',
   build: {
-    format: 'file',
+    format: 'directory',
   },
   server: {
     host: true,
