@@ -1,0 +1,31 @@
+fragment NotesParts on Notes {
+  __typename
+  title
+  dek
+  date
+  dateLabel
+  room
+  roomLabel
+  words
+  body
+}
+
+fragment ProjectsParts on Projects {
+  __typename
+  slug
+  title
+  desc
+  group
+  groupLabel
+  accent
+  accentSoft
+  accentInk
+  year
+  role
+  fieldNote
+  links {
+    __typename
+    label
+    href
+  }
+}

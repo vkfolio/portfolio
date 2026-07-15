@@ -1,0 +1,192 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { findRoom } from '../data/rooms';
+
+export interface Props {
+  title: string;
+  dek: string;
+  date: string;
+  dateLabel: string;
+  room: string;          // room slug this note is attached to
+  words: number;
+}
+
+const { title, dek, date, dateLabel, room: roomSlug, words } = Astro.props;
+const room = findRoom(roomSlug);
+const accent = room?.accent ?? 'var(--accent)';
+---
+
+<BaseLayout
+  title={`${title} · field notes`}
+  description={dek}
+  styles={[]}
+>
+  <article class="essay-page shell">
+    <div class="essay">
+      <div class="essay__crumb">
+        <a href="/notes/">← Field notes</a>
+        {room && <a href={`/projects/${room.slug}`}>Attached to {room.title}</a>}
+        <span>{dateLabel} · {words} words</span>
+      </div>
+      <h1>{title}</h1>
+      <p class="dek">{dek}</p>
+      <div class="essay__body">
+        <slot />
+      </div>
+      <div class="essay__foot">
+        {room && <div><a href={`/projects/${room.slug}`}>← Back to {room.title}</a></div>}
+        <div>Bengaluru · {dateLabel}</div>
+      </div>
+    </div>
+  </article>
+
+  <style define:vars={{ roomAccent: accent }}>
+    .essay-page {
+      padding: var(--s-10) 0 var(--s-8);
+    }
+    .essay {
+      max-width: var(--essay-w);
+      margin: 0 auto;
+    }
+    .essay__crumb {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+      align-items: center;
+      font-size: var(--t-small);
+      color: var(--muted);
+      margin-bottom: var(--s-7);
+    }
+    .essay__crumb a {
+      color: var(--accent);
+      transition: color var(--ease);
+    }
+    .essay__crumb a:hover {
+      color: var(--accent-hover);
+    }
+    .essay__crumb span {
+      color: var(--muted-2);
+    }
+    .essay h1 {
+      font-family: var(--font-display);
+      font-size: var(--t-h1);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: var(--s-4);
+    }
+    .essay .dek {
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin-bottom: var(--s-8);
+      padding-bottom: var(--s-6);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .essay__body {
+      font-size: var(--t-body);
+      line-height: 1.75;
+      color: var(--ink);
+    }
+    .essay__body :global(h2) {
+      font-family: var(--font-display);
+      font-size: var(--t-h2);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-top: var(--s-8);
+      margin-bottom: var(--s-4);
+      color: var(--ink);
+    }
+    .essay__body :global(h3) {
+      font-family: var(--font-body);
+      font-size: var(--t-h3);
+      font-weight: 600;
+      margin-top: var(--s-6);
+      margin-bottom: var(--s-3);
+      color: var(--ink);
+    }
+    .essay__body :global(p) {
+      margin-bottom: var(--s-4);
+    }
+    .essay__body :global(a) {
+      color: var(--accent);
+      border-bottom: 1px solid color-mix(in oklch, var(--accent) 25%, transparent);
+      transition: border-color var(--ease);
+    }
+    .essay__body :global(a:hover) {
+      border-bottom-color: var(--accent);
+    }
+    .essay__body :global(ul, ol) {
+      margin-bottom: var(--s-4);
+      padding-left: var(--s-6);
+    }
+    .essay__body :global(li) {
+      margin-bottom: var(--s-2);
+    }
+    .essay__body :global(code) {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 14px;
+      background: var(--bg-soft);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-ink);
+    }
+    .essay__body :global(pre) {
+      background: var(--bg-soft);
+      padding: var(--s-4);
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: var(--s-4);
+      border: 1px solid var(--hairline);
+    }
+    .essay__body :global(pre code) {
+      background: none;
+      padding: 0;
+    }
+    .essay__body :global(blockquote) {
+      border-left: 3px solid var(--roomAccent);
+      padding-left: var(--s-5);
+      margin-left: 0;
+      margin-bottom: var(--s-4);
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+    .essay__body :global(hr) {
+      border: 0;
+      height: 1px;
+      background: var(--hairline);
+      margin: var(--s-7) 0;
+    }
+    .essay__body :global(strong) {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .essay__foot {
+      margin-top: var(--s-10);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--s-4);
+      font-size: var(--t-small);
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .essay__foot a {
+      color: var(--accent);
+      transition: color var(--ease);
+    }
+    .essay__foot a:hover {
+      color: var(--accent-hover);
+    }
+
+    @media (max-width: 720px) {
+      .essay-page {
+        padding: var(--s-7) 0 var(--s-6);
+      }
+      .essay h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</BaseLayout>

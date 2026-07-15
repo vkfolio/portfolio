@@ -1,0 +1,407 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Deliberately high-level: this page describes what VMotionX does, not how the engine
+// works. The generation internals are proprietary R&D and are intentionally not detailed.
+const accent = '#4A7EC8';
+const accentSoft = '#E4ECF7';
+const accentInk = '#1E3A5F';
+
+// Quick facts strip.
+const specs = [
+  'Fully offline',
+  'Real-time viewport',
+  'One rig, fully capable',
+  'BVH / DCC export',
+  'Characters + robots',
+];
+
+// Numbered callouts drawn over the hero screenshot (positioned as % of the image).
+const pins = [
+  { n: 1, x: 9,  y: 21, title: 'Prompt panel', body: 'Describe a motion and generate it, capture a single pose, or extend a clip past its single-shot length.' },
+  { n: 2, x: 41, y: 43, title: 'Direct manipulation', body: 'Move / rotate / scale gizmos and per-joint IK handles, the same muscle memory as any DCC.' },
+  { n: 3, x: 32, y: 45, title: 'Environment props', body: 'Block out a scene with boxes, then snap heights and contacts to real geometry.' },
+  { n: 4, x: 61, y: 39, title: 'Waypoint path', body: 'Route the root through space with per-point height pins for jumps and climbs.' },
+  { n: 5, x: 93, y: 22, title: 'Outliner', body: 'The full articulated rig, every joint selectable and drivable.' },
+  { n: 6, x: 50, y: 95, title: 'Multi-lane timeline', body: 'Motion, keyframes, waypoints and constraint spans on one integer-frame timeline.' },
+];
+
+const capabilities = [
+  { title: 'Prompt → motion', body: 'Describe an action in plain language and get 3D articulated motion back, for a character or a robot rig, generated entirely on-device.' },
+  { title: 'Pose & keyframe authoring', body: 'Select any joint, dial in a pose, and capture keyframes straight from the viewport.' },
+  { title: 'Interpolate between poses', body: 'Blend captured poses into smooth, in-betweened motion with easing you control.' },
+  { title: 'Extend past the clip limit', body: 'Continue a motion beyond the model’s single-shot length and stitch the pieces together seamlessly.' },
+  { title: 'Waypoints & foot constraints', body: 'Route the subject along a path, pin jump heights, and lock feet or end-effectors to kill skating and drift.' },
+  { title: 'DCC-style transforms', body: 'A familiar move / rotate / scale workflow, with gizmos, an icon tool strip, and modal shortcuts.' },
+];
+
+// Real captures (crops of the running tool). Swap freely as the UI evolves.
+// `wide` shots span the full row in their natural aspect; the rest pair up as
+// equal-height portrait tiles, so the mosaic never looks ragged.
+const shots = [
+  { name: 'viewport', file: 'viewport.png', label: 'Viewport: gizmos, per-joint IK handles, props, and the root path', wide: true },
+  { name: 'generate', file: 'generate.png', label: 'Prompt panel: generate, save, or extend a motion' },
+  { name: 'outliner', file: 'outliner.png', label: 'Outliner: the full articulated rig, joint by joint' },
+  { name: 'timeline', file: 'timeline.png', label: 'Timeline: motion, keys, waypoints, and constraint spans on one lane', wide: true },
+];
+
+const principles = [
+  { title: 'Offline by default', body: 'No cloud, no runtime internet, no Python. The whole pipeline runs on the local machine, so the work stays private and the tool keeps working on a plane.' },
+  { title: 'Author, don’t just generate', body: 'Generation is the first frame of the workflow, not the last. Every result is editable like a normal clip, so intent survives the model.' },
+  { title: 'One rig, done properly', body: 'A single skeleton taken all the way (pose, interpolate, constrain, extend) before scaling out to crowds. Depth over breadth.' },
+  { title: 'Skeleton-native', body: 'Everything is standard rotational animation data, so it round-trips to any DCC and retargets toward robot joint rigs.' },
+];
+
+const underhood = [
+  { title: 'A native core, no runtime', body: 'The generator, the viewport, and the exporter are one self-contained native application. Nothing is downloaded or spun up at use time.' },
+  { title: 'Generate, then honor constraints', body: 'The motion core proposes; a constraint layer then pins roots, feet, keyframed poses, and end-effector targets so the authored intent is what actually ships.' },
+  { title: 'Beyond the single-shot limit', body: 'One generation is length-capped. Longer motion is built by pinning a prefix, generating a continuation, then rigid-aligning and crossfading the seam so it reads as one take.' },
+  { title: 'Verifiable output', body: 'Every generated clip is checked against its own constraints before it is accepted, and exports pass an automated import gate in a real DCC.' },
+];
+
+const roadmap = [
+  'Retarget presets for common character and robot rigs',
+  'Multi-character scenes with interaction constraints',
+  'More export targets (USD, glTF, robot description formats)',
+  'Physics-aware foot and contact refinement',
+];
+---
+
+<BaseLayout
+  title="VMotionX · Vignesh K"
+  description="A fully-offline desktop tool that turns a text prompt into authored 3D motion for characters and robots alike. Personal R&D, work in progress."
+>
+  <article class="vx shell" style={`--vx-accent:${accent};--vx-soft:${accentSoft};--vx-ink:${accentInk};`}>
+    <a class="vx-back" href="/projects/">← Projects</a>
+
+    <header class="vx-hero animate-fade-in-up">
+      <div class="vx-hero__meta">
+        <span class="vx-badge">Work in progress</span>
+        <span class="vx-dot">·</span>
+        <span>2026</span>
+        <span class="vx-dot">·</span>
+        <span>Personal R&amp;D</span>
+      </div>
+      <h1>VMotionX</h1>
+      <p class="vx-tagline">
+        Type a prompt → 3D motion for characters <span class="vx-em">and robots</span> → export for your DCC or rig. <span class="vx-em">Fully offline.</span>
+      </p>
+      <ul class="vx-specs" aria-label="At a glance">
+        {specs.map((s) => <li>{s}</li>)}
+      </ul>
+    </header>
+
+    <section class="vx-intro animate-fade-in-up delay-1">
+      <p>
+        VMotionX is a desktop authoring tool that turns a plain-text prompt into 3D motion you
+        can <strong>pose, retime, extend, constrain, and export</strong> as standard animation
+        data, with no cloud, no runtime internet, and no Python. It started as a character-animation
+        tool, but the motion it authors is really joint trajectories on an articulated rig, so
+        the same workflow reaches beyond human characters toward <strong>robotics</strong>:
+        humanoids and other articulated systems. The generation engine runs entirely on the local
+        machine behind a purpose-built native pipeline.
+      </p>
+      <p class="vx-muted">
+        The goal is a small, self-contained studio. Start from a sentence, then treat the result
+        like any other clip: keyframe it, interpolate it, route it through an environment, and
+        hand clean motion to Blender, Unreal, Unity, or a robotics pipeline.
+      </p>
+    </section>
+
+    <!-- Annotated hero screenshot -->
+    <section class="vx-block animate-fade-in-up delay-1">
+      <div class="vx-block__head">
+        <h2>The tool</h2>
+        <span class="vx-tag">Live capture</span>
+      </div>
+      <figure class="vx-annotated">
+        <img src="/assets/vmotionx/hero.png" alt="VMotionX authoring window" loading="lazy" />
+        {pins.map((p) => (
+          <span class="vx-pin" style={`left:${p.x}%;top:${p.y}%`} aria-hidden="true">{p.n}</span>
+        ))}
+      </figure>
+      <ol class="vx-legend">
+        {pins.map((p) => (
+          <li><span class="vx-legend__n">{p.n}</span><div><strong>{p.title}.</strong> {p.body}</div></li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- Pipeline flowchart -->
+    <section class="vx-block animate-fade-in-up delay-2">
+      <div class="vx-block__head">
+        <h2>How it works</h2>
+        <span class="vx-tag">High level</span>
+      </div>
+      <figure class="vx-flowimg">
+        <img src="/assets/vmotionx/flow.png" alt="VMotionX pipeline: Prompt → Interpret → Generate → Decode → Author → Export" loading="lazy" />
+      </figure>
+      <p class="vx-loop"><span>⟳</span> Authoring feeds back into generation: pin what you like, then re-generate the rest under those constraints.</p>
+      <p class="vx-note">
+        <strong>Note:</strong> the <em>Interpret</em>, <em>Generate</em>, and <em>Decode</em> stages run entirely on your
+        machine. Their internals are proprietary and deliberately abstracted here.
+      </p>
+    </section>
+
+    <!-- Capabilities -->
+    <section class="vx-block animate-fade-in-up delay-2">
+      <h2>What it does</h2>
+      <div class="vx-caps">
+        {capabilities.map((c) => (
+          <div class="vx-cap">
+            <h3>{c.title}</h3>
+            <p>{c.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Real screenshot gallery -->
+    <section class="vx-block animate-fade-in-up delay-2">
+      <div class="vx-block__head">
+        <h2>Screens</h2>
+        <span class="vx-tag">From the running build</span>
+      </div>
+      <div class="vx-shots">
+        {shots.map((s) => (
+          <figure class={`vx-shot${s.wide ? ' vx-shot--wide' : ''}`}>
+            <div class="vx-shot__frame">
+              <span class="vx-shot__bar" aria-hidden="true">
+                <i></i><i></i><i></i>
+                <em>{s.file}</em>
+              </span>
+              <div class="vx-shot__canvas">
+                <img src={`/assets/vmotionx/${s.name}.png`} alt={s.label} loading="lazy" />
+              </div>
+            </div>
+            <figcaption>{s.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <!-- Design principles -->
+    <section class="vx-block animate-fade-in-up delay-3">
+      <h2>Design principles</h2>
+      <div class="vx-grid2">
+        {principles.map((p) => (
+          <div class="vx-card">
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Under the hood -->
+    <section class="vx-block animate-fade-in-up delay-3">
+      <div class="vx-block__head">
+        <h2>Under the hood</h2>
+        <span class="vx-tag">Approach, not internals</span>
+      </div>
+      <div class="vx-grid2">
+        {underhood.map((p) => (
+          <div class="vx-card vx-card--tech">
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="vx-block animate-fade-in-up delay-3">
+      <h2>What’s next</h2>
+      <ul class="vx-road">
+        {roadmap.map((r) => <li>{r}</li>)}
+      </ul>
+    </section>
+
+    <section class="vx-status animate-fade-in-up delay-3">
+      <div class="vx-status__row">
+        <span class="vx-status__dot"></span>
+        <div>
+          <h2>Status</h2>
+          <p>
+            Actively developed. The generation engine and core authoring loop are working;
+            the interface and export polish are ongoing. Not open source.
+          </p>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <style>
+    .vx { padding: var(--s-8) 0 var(--s-12); max-width: 960px; }
+    .vx-back {
+      display: inline-block; font-size: var(--t-small); font-weight: 600;
+      color: var(--muted); margin-bottom: var(--s-8); transition: color var(--ease);
+    }
+    .vx-back:hover { color: var(--vx-accent); }
+
+    /* hero */
+    .vx-hero { padding-bottom: var(--s-8); border-bottom: 1px solid var(--hairline); margin-bottom: var(--s-8); }
+    .vx-hero__meta {
+      display: flex; align-items: center; gap: var(--s-2);
+      font-size: var(--t-tiny); font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: var(--s-4);
+    }
+    .vx-dot { color: var(--hairline); }
+    .vx-badge { background: var(--vx-soft); color: var(--vx-ink); padding: 3px 10px; border-radius: 999px; letter-spacing: 0.04em; }
+    .vx-hero h1 {
+      font-family: var(--font-display); font-size: clamp(52px, 7vw, 96px); font-weight: 400;
+      line-height: 0.98; letter-spacing: -0.03em; color: var(--ink); margin-bottom: var(--s-4);
+    }
+    .vx-tagline { font-size: clamp(18px, 2.4vw, 24px); color: var(--ink-soft); line-height: 1.5; max-width: 660px; }
+    .vx-em { color: var(--vx-accent); font-weight: 600; }
+    .vx-specs {
+      list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3);
+      margin-top: var(--s-6); padding: 0;
+    }
+    .vx-specs li {
+      font-size: var(--t-tiny); font-weight: 600; letter-spacing: 0.03em; color: var(--ink-soft);
+      background: var(--bg-raised); border: 1px solid var(--hairline);
+      padding: 5px 12px; border-radius: 999px;
+    }
+
+    /* intro */
+    .vx-intro { display: flex; flex-direction: column; gap: var(--s-4); margin-bottom: var(--s-12); max-width: 760px; }
+    .vx-intro p { font-size: 18px; line-height: 1.7; color: var(--ink-soft); }
+    .vx-intro strong { color: var(--ink); font-weight: 600; }
+    .vx-muted { color: var(--muted) !important; }
+
+    /* blocks */
+    .vx-block { margin-bottom: var(--s-12); }
+    .vx-block__head { display: flex; align-items: baseline; gap: var(--s-4); flex-wrap: wrap; margin-bottom: var(--s-6); }
+    .vx-block h2 { font-family: var(--font-display); font-size: var(--t-h2); font-weight: 400; color: var(--ink); margin-bottom: var(--s-6); }
+    .vx-block__head h2 { margin-bottom: 0; }
+    .vx-tag {
+      font-size: var(--t-tiny); font-weight: 600; letter-spacing: 0.04em;
+      color: var(--vx-ink); background: var(--vx-soft); padding: 3px 10px; border-radius: 999px;
+    }
+
+    /* annotated screenshot */
+    .vx-annotated { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--hairline); line-height: 0; }
+    .vx-annotated img { width: 100%; height: auto; display: block; }
+    .vx-pin {
+      position: absolute; transform: translate(-50%, -50%);
+      width: 26px; height: 26px; border-radius: 999px;
+      background: var(--vx-accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; line-height: 1;
+      box-shadow: 0 0 0 4px color-mix(in oklch, var(--vx-accent) 30%, transparent), 0 2px 8px rgba(0,0,0,0.35);
+    }
+    .vx-legend { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-3) var(--s-6); }
+    .vx-legend li { display: flex; gap: var(--s-3); font-size: var(--t-small); line-height: 1.55; color: var(--ink-soft); }
+    .vx-legend strong { color: var(--ink); }
+    .vx-legend__n {
+      flex: none; width: 22px; height: 22px; border-radius: 999px; margin-top: 1px;
+      background: var(--vx-soft); color: var(--vx-ink);
+      display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+    }
+
+    /* flowchart (image) */
+    .vx-flowimg {
+      border-radius: 16px; overflow: hidden; border: 1px solid var(--hairline);
+      background: var(--bg-raised); padding: var(--s-6); line-height: 0;
+    }
+    .vx-flowimg img { width: 100%; height: auto; display: block; }
+    .vx-loop {
+      margin-top: var(--s-4); font-size: var(--t-small); color: var(--ink-soft);
+      display: flex; align-items: center; gap: var(--s-2);
+    }
+    .vx-loop span { color: var(--vx-accent); font-size: 18px; }
+    .vx-note {
+      margin-top: var(--s-4); font-size: var(--t-small); line-height: 1.65; color: var(--ink-soft);
+      background: var(--bg-raised); border: 1px solid var(--hairline); border-left: 3px solid var(--vx-accent);
+      border-radius: 10px; padding: var(--s-4) var(--s-5);
+    }
+
+    /* capabilities */
+    .vx-caps { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-4); }
+    .vx-cap {
+      background: var(--bg-raised); border: 1px solid var(--hairline); border-radius: 14px;
+      padding: var(--s-5) var(--s-6); transition: transform var(--ease), border-color var(--ease);
+    }
+    .vx-cap:hover { transform: translateY(-3px); border-color: color-mix(in oklch, var(--vx-accent) 30%, var(--hairline)); }
+    .vx-cap h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: var(--s-2); }
+    .vx-cap p { font-size: var(--t-small); line-height: 1.6; color: var(--ink-soft); }
+
+    /* screenshot gallery: deliberate mosaic, each shot in its own app window */
+    .vx-shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-5); }
+    .vx-shot { display: flex; flex-direction: column; gap: var(--s-3); }
+    .vx-shot--wide { grid-column: 1 / -1; }
+    .vx-shot__frame {
+      border-radius: 14px; overflow: hidden; border: 1px solid var(--hairline);
+      background: #0d0d10; box-shadow: 0 12px 32px -18px rgba(20, 24, 48, 0.5);
+      transition: transform var(--ease), border-color var(--ease), box-shadow var(--ease);
+    }
+    .vx-shot__frame:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in oklch, var(--vx-accent) 32%, var(--hairline));
+      box-shadow: 0 18px 40px -20px rgba(20, 24, 48, 0.6);
+    }
+    /* window title bar */
+    .vx-shot__bar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 9px 12px; background: #17171d; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .vx-shot__bar i { width: 9px; height: 9px; border-radius: 999px; background: #34343d; flex: none; }
+    .vx-shot__bar i:nth-child(1) { background: #ff5f57; }
+    .vx-shot__bar i:nth-child(2) { background: #febc2e; }
+    .vx-shot__bar i:nth-child(3) { background: #28c840; }
+    .vx-shot__bar em {
+      margin-left: 6px; font-style: normal; font-family: var(--mono);
+      font-size: 11px; letter-spacing: 0.02em; color: #8b8b97;
+    }
+    /* canvas: wide shots keep their natural aspect; portrait pair share a fixed frame */
+    .vx-shot__canvas { line-height: 0; overflow: hidden; }
+    .vx-shot__canvas img { width: 100%; height: auto; display: block; transition: transform var(--ease-slow); }
+    .vx-shot__frame:hover .vx-shot__canvas img { transform: scale(1.03); }
+    .vx-shot:not(.vx-shot--wide) .vx-shot__canvas {
+      aspect-ratio: 4 / 3; display: grid; place-items: center; padding: var(--s-5);
+      background:
+        radial-gradient(120% 120% at 50% 0%, #17171f 0%, #0d0d10 70%);
+    }
+    .vx-shot:not(.vx-shot--wide) .vx-shot__canvas img {
+      width: auto; height: auto; max-width: 100%; max-height: 100%;
+      border-radius: 6px; box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+    }
+    .vx-shot figcaption {
+      font-size: var(--t-small); color: var(--muted); line-height: 1.5;
+      padding-left: 2px;
+    }
+
+    /* generic cards / grids */
+    .vx-grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-4); }
+    .vx-card {
+      background: var(--bg-raised); border: 1px solid var(--hairline); border-radius: 14px; padding: var(--s-5) var(--s-6);
+    }
+    .vx-card h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: var(--s-2); }
+    .vx-card p { font-size: var(--t-small); line-height: 1.6; color: var(--ink-soft); }
+    .vx-card--tech { border-left: 3px solid color-mix(in oklch, var(--vx-accent) 45%, var(--hairline)); }
+
+    /* roadmap */
+    .vx-road { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--s-3); }
+    .vx-road li {
+      position: relative; padding-left: var(--s-6); font-size: var(--t-small); line-height: 1.6; color: var(--ink-soft);
+    }
+    .vx-road li::before { content: '→'; position: absolute; left: 0; color: var(--vx-accent); font-weight: 700; }
+
+    /* status */
+    .vx-status { background: var(--bg-raised); border: 1px solid var(--hairline); border-radius: 16px; padding: var(--s-6); }
+    .vx-status__row { display: flex; gap: var(--s-4); align-items: flex-start; }
+    .vx-status__dot {
+      width: 10px; height: 10px; border-radius: 999px; margin-top: 7px; flex: none; background: var(--vx-accent);
+      box-shadow: 0 0 0 4px color-mix(in oklch, var(--vx-accent) 18%, transparent);
+    }
+    .vx-status h2 { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--ink); margin-bottom: var(--s-2); }
+    .vx-status p { font-size: var(--t-small); line-height: 1.65; color: var(--ink-soft); max-width: 620px; }
+
+    @media (max-width: 760px) {
+      .vx-caps, .vx-shots, .vx-grid2, .vx-legend { grid-template-columns: 1fr; }
+      .vx-pin { width: 22px; height: 22px; font-size: 11px; }
+      .vx-flowimg { padding: var(--s-4); }
+    }
+  </style>
+</BaseLayout>

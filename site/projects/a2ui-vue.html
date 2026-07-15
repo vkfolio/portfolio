@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>a2ui-vue · vkfolio</title>
+  <meta name="description" content="A2UI Vue — Vue 3 renderer for Google's A2UI protocol." />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'><rect x='0.5' y='0.5' width='21' height='21' fill='%23FAFAF7' stroke='%2341B883'/><path d='M5 6 L8 14 L11 6 M11 14 L11 6 L14 11 L17 6' stroke='%2341B883' stroke-width='1.5' fill='none' stroke-linecap='square'/></svg>" />
+  <link rel="stylesheet" href="../assets/styles/base.css" />
+  <link rel="stylesheet" href="../assets/styles/room-a2ui.css" />
+</head>
+<body class="a2ui-room">
+  <header class="topbar">
+    <a class="topbar__mark" href="/">
+      <span class="dot" aria-hidden="true"></span>
+      vkfolio
+    </a>
+    <span class="topbar__breadcrumb">
+      <span class="pwd">~/projects/</span><span class="cmd">a2ui-vue</span>
+      &nbsp;<span style="color: var(--muted-2);">rendering message · 200 OK</span>
+    </span>
+    <nav class="topbar__links">
+      <a href="/">trace</a>
+      <a href="/work.html">work</a>
+      <a href="/notes/">notes</a>
+      <a href="/about.html">about</a>
+      <a href="/resume.html">resume</a>
+    </nav>
+  </header>
+
+  <main class="a2">
+
+    <div class="a2__head">
+      <h1>
+        a2ui-vue
+        <span class="sub">A reference implementation of Google's A2UI agent-to-UI protocol, in 3.4 kB of Vue 3. The page below is one A2UI message rendered live.</span>
+      </h1>
+      <span class="a2__model">vue 3 · runtime</span>
+    </div>
+
+    <div class="a2__layout">
+
+      <!-- left: the rendered A2UI message -->
+      <div class="a2__render">
+
+        <div class="widget widget--stack" data-tag="Stack">
+
+          <div class="widget widget--heading" data-tag="Heading.h1">
+            <h2>A2UI Vue — a tiny runtime for agent-emitted UI</h2>
+          </div>
+
+          <div class="widget widget--paragraph" data-tag="Paragraph">
+            <p>
+              A2UI describes UI as messages the agent emits. Most reference runtimes are React-first;
+              this is the Vue 3 counterpart, in <code>3.4 kB</code> minified, no dependencies.
+              The single composable validates the schema on the wire and falls back to a typed
+              error component, never a blank screen.
+            </p>
+          </div>
+
+          <div class="widget widget--card" data-tag="Card · prominent">
+            <h2>The page above is the demo.</h2>
+            <p>Everything in this column is one A2UI message rendered by the runtime. The schema panel on the right shows what the agent emitted.</p>
+          </div>
+
+          <div class="widget widget--list" data-tag="List">
+            <ul>
+              <li>Single composable: <code>useA2UI(message)</code> returns the tree to render.</li>
+              <li>Schema validation on the wire; typed error widget on mismatch.</li>
+              <li>No tree-shaking gotchas — all primitives in one file.</li>
+              <li>Server-driven; never re-mounts the root on update.</li>
+            </ul>
+          </div>
+
+          <div class="widget widget--paragraph" data-tag="Paragraph">
+            <p>If you're curious how the protocol degrades when the agent sends something unexpected, the next widget is one. It's not a bug — it's the contract.</p>
+          </div>
+
+          <div class="widget widget--error" data-tag="Error.fallback">
+            unknown widget kind: <code>"Carousel"</code> · skipped &amp; logged.
+          </div>
+
+          <div class="widget widget--button-row" data-tag="ButtonRow">
+            <a class="widget--button" href="https://github.com/vkfolio/a2ui-vue">View on GitHub →</a>
+            <a class="widget--button" href="https://www.npmjs.com" style="background: transparent; color: var(--accent); border: 1px solid var(--accent);">npm install a2ui-vue</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- right: the message schema -->
+      <aside class="a2__schema">
+        <h4>message · received from agent</h4>
+<pre>{
+  <span class="k">"kind"</span>: <span class="s">"Stack"</span>,
+  <span class="k">"children"</span>: [
+    {
+      <span class="k">"kind"</span>: <span class="s">"Heading"</span>,
+      <span class="k">"level"</span>: <span class="n">1</span>,
+      <span class="k">"text"</span>: <span class="s">"A2UI Vue — a tiny runtime ..."</span>
+    },
+    {
+      <span class="k">"kind"</span>: <span class="s">"Paragraph"</span>,
+      <span class="k">"text"</span>: <span class="s">"A2UI describes UI as messages ..."</span>
+    },
+    {
+      <span class="k">"kind"</span>: <span class="s">"Card"</span>,
+      <span class="k">"variant"</span>: <span class="s">"prominent"</span>,
+      <span class="k">"title"</span>: <span class="s">"The page above is the demo."</span>,
+      <span class="k">"body"</span>: <span class="s">"Everything in this column ..."</span>
+    },
+    {
+      <span class="k">"kind"</span>: <span class="s">"List"</span>,
+      <span class="k">"items"</span>: [ <span class="c">/* 4 strings */</span> ]
+    },
+    {
+      <span class="k">"kind"</span>: <span class="s">"Carousel"</span>,   <span class="c">/* unknown — falls back */</span>
+      <span class="k">"slides"</span>: [ <span class="c">... </span>]
+    },
+    {
+      <span class="k">"kind"</span>: <span class="s">"ButtonRow"</span>,
+      <span class="k">"buttons"</span>: [
+        { <span class="k">"label"</span>: <span class="s">"View on GitHub"</span>, <span class="k">"href"</span>: <span class="s">"..."</span> },
+        { <span class="k">"label"</span>: <span class="s">"npm install"</span>,    <span class="k">"href"</span>: <span class="s">"..."</span> }
+      ]
+    }
+  ]
+}</pre>
+      </aside>
+    </div>
+
+    <div class="a2__below">
+      <div>
+        <strong style="color: var(--ink); font-weight: 500;">A2UI Vue</strong> —
+        Vue 3 renderer for Google's A2UI protocol. MIT.
+        <a href="https://github.com/vkfolio/a2ui-vue">github.com/vkfolio/a2ui-vue</a>.
+      </div>
+      <a href="/">← back to the trace</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <p>vkfolio · the workshop is open.</p>
+      <p>
+        <a href="mailto:vignesh0702@gmail.com">vignesh0702@gmail.com</a> ·
+        <a href="https://github.com/vkfolio">github.com/vkfolio</a>
+      </p>
+    </div>
+    <div class="footer__tools">
+      <button class="footer__tool" id="themeToggle" aria-pressed="false">theme · system</button>
+      <a class="footer__tool" href="/">/ trace</a>
+    </div>
+  </footer>
+
+  <script src="../assets/scripts/chrome.js"></script>
+</body>
+</html>

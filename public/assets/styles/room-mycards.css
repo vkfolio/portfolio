@@ -1,0 +1,219 @@
+/* room-mycards.css — MyCardsAndDocs: stacked iOS Wallet-style cards. */
+
+.mycards-room {
+  --accent:      #007AFF;
+  --accent-soft: #DFEDFF;
+  --accent-ink:  #003A75;
+  background: var(--paper);
+  min-height: 100vh;
+}
+
+[data-theme="dark"] .mycards-room {
+  --accent-soft: #0A2240;
+  --accent-ink:  #9EC7F5;
+}
+
+.mc {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: var(--s-5) var(--gutter);
+}
+
+.mc__head {
+  margin-bottom: var(--s-6);
+  display: grid;
+  gap: var(--s-2);
+}
+.mc__head h1 {
+  font-family: var(--mono);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.mc__head .sub {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 4px;
+  max-width: 56ch;
+}
+
+.mc__split {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: var(--s-6);
+  align-items: start;
+}
+@media (max-width: 900px) { .mc__split { grid-template-columns: 1fr; } }
+
+/* — the wallet — */
+.wallet {
+  position: relative;
+  height: 540px;
+  perspective: 1200px;
+  padding: 12px;
+  background: linear-gradient(180deg, color-mix(in oklch, var(--accent) 6%, var(--paper)), var(--paper));
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.wallet::before {
+  content: 'wallet — tap a card';
+  position: absolute;
+  top: 12px; left: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 200px;
+  border-radius: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 18px 20px;
+  border: 1px solid var(--hairline);
+  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.18);
+  font-family: var(--sans, var(--mono));
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 8px;
+  transition: transform 380ms cubic-bezier(.2, .8, .2, 1), box-shadow 300ms, opacity 300ms;
+  will-change: transform;
+  cursor: pointer;
+}
+.card .label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.card .body {
+  align-self: end;
+}
+.card .body h3 {
+  font-family: var(--sans, system-ui);
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.card .body p {
+  font-family: var(--sans, system-ui);
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+.card .foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* card variants */
+.card--id {
+  background: linear-gradient(140deg, #007AFF, #0A4FB7);
+  color: white;
+  border: 0;
+}
+.card--passport {
+  background: linear-gradient(140deg, #1E2B5E, #0B0F2C);
+  color: white;
+  border: 0;
+}
+.card--travel {
+  background: linear-gradient(140deg, #2BA86F, #14503B);
+  color: white;
+  border: 0;
+}
+.card--health {
+  background: linear-gradient(140deg, #EF4A4A, #7F1313);
+  color: white;
+  border: 0;
+}
+.card--loyalty {
+  background: linear-gradient(140deg, #FFD43B, #C68F00);
+  color: #2A1A00;
+}
+.card--license {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+}
+
+/* stack positions (no JS expansion — animated on click via JS) */
+.card[data-i="0"] { transform: translateY(0)   scale(1);     z-index: 10; }
+.card[data-i="1"] { transform: translateY(64px)  scale(0.97); z-index: 9; }
+.card[data-i="2"] { transform: translateY(120px) scale(0.94); z-index: 8; }
+.card[data-i="3"] { transform: translateY(170px) scale(0.91); z-index: 7; }
+.card[data-i="4"] { transform: translateY(214px) scale(0.88); z-index: 6; }
+.card[data-i="5"] { transform: translateY(252px) scale(0.85); z-index: 5; }
+
+/* — right column: project copy + meta — */
+.mc__copy {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  display: grid;
+  gap: var(--s-3);
+}
+.mc__copy h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  margin-top: var(--s-2);
+}
+.mc__copy code {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-size: 12px;
+}
+.mc__copy ul { list-style: none; display: grid; gap: 6px; padding-left: 0; }
+.mc__copy li {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 6px;
+  font-size: 12px;
+}
+.mc__copy li::before { content: '→'; color: var(--accent); }
+
+.mc__meta {
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--hairline);
+  font-size: 11px;
+  color: var(--muted);
+  display: grid;
+  gap: 4px;
+}
+.mc__meta a { color: var(--ink-soft); border-bottom: 1px solid var(--hairline); }
+.mc__meta a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.mc__below {
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--hairline);
+  font-size: var(--t-small);
+  color: var(--muted);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--s-3);
+  align-items: baseline;
+}
+.mc__below a { color: var(--ink-soft); border-bottom: 1px solid var(--hairline); }
+.mc__below a:hover { color: var(--accent); border-bottom-color: var(--accent); }

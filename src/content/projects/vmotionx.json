@@ -1,0 +1,15 @@
+{
+  "slug": "vmotionx",
+  "title": "VMotionX",
+  "desc": "Type a prompt → 3D motion for characters and robots → export for your DCC or rig. Fully offline.",
+  "group": "personal",
+  "groupLabel": "Personal R&D · realtime 3D",
+  "accent": "#4A7EC8",
+  "accentSoft": "#E4ECF7",
+  "accentInk": "#1E3A5F",
+  "year": "2026",
+  "role": "Personal R&D",
+  "links": [
+    { "label": "Overview", "href": "/projects/vmotionx" }
+  ]
+}

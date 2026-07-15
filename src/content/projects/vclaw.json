@@ -1,0 +1,17 @@
+{
+  "slug": "vclaw",
+  "title": "VClaw",
+  "desc": "A local-first fleet of AI-controlled machines.",
+  "group": "personal",
+  "groupLabel": "Personal · local-first AI",
+  "accent": "#4F46E5",
+  "accentSoft": "#E0E7FF",
+  "accentInk": "#312E81",
+  "year": "2026",
+  "role": "Solo: full-stack, native, design",
+  "fieldNote": "why-i-built-vclaw",
+  "links": [
+    { "label": "vclaw.vkfolio.com", "href": "https://vclaw.vkfolio.com" },
+    { "label": "github.com/vkfolio/vclaw_fleet", "href": "https://github.com/vkfolio/vclaw_fleet" }
+  ]
+}

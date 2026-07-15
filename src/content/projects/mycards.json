@@ -1,0 +1,15 @@
+{
+  "slug": "mycards",
+  "title": "MyCardsAndDocs",
+  "desc": "iOS: IDs and documents, offline-only.",
+  "group": "personal",
+  "groupLabel": "Personal · iOS",
+  "accent": "#007AFF",
+  "accentSoft": "#DFEDFF",
+  "accentInk": "#003A75",
+  "year": "2024",
+  "role": "iOS · solo",
+  "links": [
+    { "label": "App Store · id6746961420", "href": "https://apps.apple.com/us/app/mycardsanddocs/id6746961420" }
+  ]
+}

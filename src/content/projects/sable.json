@@ -1,0 +1,16 @@
+{
+  "slug": "sable",
+  "title": "Sable",
+  "desc": "A small, deliberate UI library.",
+  "group": "oss",
+  "groupLabel": "OSS · UI runtimes",
+  "accent": "#475569",
+  "accentSoft": "#E6E9ED",
+  "accentInk": "#1E2A38",
+  "year": "2024",
+  "role": "Personal R&D",
+  "fieldNote": "why-i-built-sable",
+  "links": [
+    { "label": "github.com/vkfolio/sable", "href": "https://github.com/vkfolio/sable" }
+  ]
+}

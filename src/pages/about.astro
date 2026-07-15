@@ -1,0 +1,399 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const stats = [
+  { value: '14+', label: 'Years' },
+  { value: '1', label: 'US Patent' },
+  { value: '3', label: 'Fortune 500 brands' },
+  { value: '6', label: 'OSS tools' },
+];
+
+const skills = [
+  'Multi-Agent Systems', 'LangGraph', 'LangChain', 'RAG Pipelines',
+  'Knowledge Graphs', 'Diffusion', 'LoRA / QLoRA', 'Computer Vision',
+  'Unreal Engine (C++)', 'WebGL 2', 'WASM', 'WebRTC Pixel Streaming', 'DLSS',
+  'Python', 'C++', 'Go', 'Node.js', 'FastAPI', 'Flutter',
+  'AWS', 'GCP', 'Docker', 'Redis', 'MongoDB', 'Android', 'iOS',
+];
+---
+
+<BaseLayout
+  title="About · Vignesh K"
+  description="About Vignesh K, solutions architect, fourteen years, Bengaluru."
+>
+  <div class="about-banner">
+    <img src="/assets/myphoto.jpg" alt="Vignesh K" />
+    <div class="about-banner__fade"></div>
+  </div>
+
+  <section class="about-page shell">
+    <div class="stats-row animate-fade-in-up">
+      {stats.map((s) => (
+        <div class="stat">
+          <span class="stat__value" data-count={s.value}>{s.value}</span>
+          <span class="stat__label">{s.label}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="about-page__body">
+      <div class="about-page__main animate-fade-in-up delay-1">
+        <div class="about-page__bio">
+          <p class="lead">
+            I am a solutions architect based in Bengaluru. For the last nine years
+            I have led architecture at <a href="/work">Streamoid Technologies</a>,
+            where I work on two flagship platforms: an AI-native WebGL/WASM canvas
+            for fashion design boards used by Puma, Ajio, and Aditya Birla Fashion &amp;
+            Retail, and a cloud-streamed Unreal Engine 3D studio that is part of the
+            curriculum at the London College of Fashion.
+          </p>
+          <p>
+            Before Streamoid, I shipped Android at scale, hybrid positioning systems
+            for alpine sports, SIP video calling, and a healthcare ASP.NET stack.
+            One US patent on automated product video generation for fashion items.
+          </p>
+          <p>
+            On the side, I keep small open-source tools: four extensions in the
+            VS Code Marketplace, a self-hosted web-search API, a Vue runtime for
+            Google&apos;s A2UI protocol, and a UI library called Sable that does eight
+            things on purpose. The Mogo family is personal research, not product.
+          </p>
+          <p>
+            This site exists because the work should be findable. It is not
+            for-hire signals; it is a workshop you can step into. Mail welcome.
+          </p>
+        </div>
+
+        <div class="skills-cloud">
+          <p class="section-label">Technologies</p>
+          <div class="skills-cloud__list">
+            {skills.map((skill) => (
+              <span class="skill-pill">{skill}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="about-page__cta">
+          <a href="mailto:vignesh0702@gmail.com" class="btn btn--primary">Get in touch</a>
+          <a href="/resume" class="btn btn--ghost">View resume</a>
+        </div>
+      </div>
+
+      <aside class="about-page__side animate-fade-in-up delay-2">
+        <div class="side-item">
+          <span class="side-item__label">Location</span>
+          <span class="side-item__value">Bengaluru, India</span>
+        </div>
+        <div class="side-item">
+          <span class="side-item__label">Education</span>
+          <span class="side-item__value">B.Tech, Electronics &amp; Communication <span class="yr">2011</span></span>
+        </div>
+        <div class="side-item">
+          <span class="side-item__label">Certifications</span>
+          <div class="side-item__stack">
+            <span>IBM Data Science Professional Certificate <span class="yr">IBM · Oct 2021 · T4ZSDX43426J</span></span>
+            <span>DeepLearning.AI TensorFlow Developer <span class="yr">Sep 2021 · BYKSRWDQSAD2</span></span>
+            <span>Unreal Engine Essentials, Unreal Authorized Training <span class="yr">BlueStone · Mar 2022</span></span>
+          </div>
+        </div>
+        <div class="side-item">
+          <span class="side-item__label">Contact</span>
+          <div class="side-item__stack">
+            <a href="mailto:vignesh0702@gmail.com">vignesh0702@gmail.com</a>
+            <a href="https://www.linkedin.com/in/vigneshkarnika">LinkedIn</a>
+            <a href="https://github.com/vkfolio">GitHub</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="cta-band shell animate-fade-in-up delay-3">
+    <div class="cta-band__inner">
+      <h2>Let&apos;s connect.</h2>
+      <p>
+        Mail welcome at <a href="mailto:vignesh0702@gmail.com">vignesh0702@gmail.com</a>
+        or find me on <a href="https://github.com/vkfolio">GitHub</a> and
+        <a href="https://www.linkedin.com/in/vigneshkarnika">LinkedIn</a>.
+      </p>
+    </div>
+  </section>
+
+  <style>
+    .about-banner {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      margin-bottom: var(--s-8);
+    }
+    .about-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+    .about-banner__fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 20%, var(--bg) 100%);
+    }
+
+    .about-page {
+      padding-bottom: var(--s-8);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-6);
+      margin-bottom: var(--s-10);
+      padding-bottom: var(--s-8);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .stat__value {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 400;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .stat__label {
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .about-page__body {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: var(--s-12);
+      align-items: start;
+    }
+
+    .about-page__main {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+    }
+
+    .about-page__bio {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .about-page__bio .lead {
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--ink);
+      max-width: 56ch;
+    }
+    .about-page__bio p {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--ink-soft);
+      max-width: 56ch;
+    }
+    .about-page__bio a {
+      color: var(--accent);
+      border-bottom: 1px solid color-mix(in oklch, var(--accent) 25%, transparent);
+      transition: border-color var(--ease);
+    }
+    .about-page__bio a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    .skills-cloud {
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--hairline);
+    }
+    .skills-cloud .section-label {
+      margin-bottom: var(--s-4);
+    }
+    .skills-cloud__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+    }
+    .skill-pill {
+      font-size: var(--t-small);
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: var(--bg-soft);
+      border: 1px solid var(--hairline);
+      padding: 6px 14px;
+      border-radius: 100px;
+      transition: border-color var(--ease), color var(--ease), transform var(--ease);
+      cursor: default;
+    }
+    .skill-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .about-page__cta {
+      display: flex;
+      gap: var(--s-4);
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--t-small);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      padding: 12px 24px;
+      border-radius: 8px;
+      transition: transform var(--ease), background var(--ease), color var(--ease), box-shadow var(--ease);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn--primary {
+      background: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 1px 2px color-mix(in oklch, var(--accent) 20%, transparent);
+    }
+    .btn--primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 12px color-mix(in oklch, var(--accent) 25%, transparent);
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--hairline);
+    }
+    .btn--ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .about-page__side {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-6);
+      position: sticky;
+      top: 100px;
+      padding-top: var(--s-2);
+    }
+
+    .side-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      padding-bottom: var(--s-5);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .side-item:last-child {
+      border-bottom: none;
+    }
+    .side-item__label {
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .side-item__value {
+      font-size: var(--t-body);
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .side-item__value .yr {
+      display: block;
+      font-size: var(--t-small);
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .side-item__stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .side-item__stack span {
+      font-size: var(--t-small);
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .side-item__stack a {
+      font-size: var(--t-small);
+      color: var(--accent);
+      border-bottom: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
+      transition: border-color var(--ease);
+      width: fit-content;
+    }
+    .side-item__stack a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    .cta-band {
+      padding: var(--s-10) 0 var(--s-8);
+    }
+    .cta-band__inner {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .cta-band__inner h2 {
+      font-family: var(--font-display);
+      font-size: var(--t-h1);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: var(--s-4);
+    }
+    .cta-band__inner p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+    .cta-band__inner a {
+      color: var(--accent);
+      border-bottom: 1px solid color-mix(in oklch, var(--accent) 30%, transparent);
+      transition: border-color var(--ease);
+    }
+    .cta-band__inner a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    @media (max-width: 860px) {
+      .about-page__body {
+        grid-template-columns: 1fr;
+        gap: var(--s-10);
+      }
+      .about-page__side {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--s-5);
+      }
+      .side-item {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 540px) {
+      .about-page__side {
+        grid-template-columns: 1fr;
+      }
+      .about-banner {
+        height: 240px;
+      }
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,15 @@
+{
+  "slug": "olla-chat",
+  "title": "Olla Chat",
+  "desc": "VS Code chat for Ollama.",
+  "group": "oss",
+  "groupLabel": "OSS · dev tools",
+  "accent": "#5C3FBF",
+  "accentSoft": "#EBE4F7",
+  "accentInk": "#2E1D6E",
+  "year": "2024",
+  "role": "Personal R&D",
+  "links": [
+    { "label": "VS Code Marketplace", "href": "https://marketplace.visualstudio.com" }
+  ]
+}

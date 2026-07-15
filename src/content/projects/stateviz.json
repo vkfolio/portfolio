@@ -1,0 +1,15 @@
+{
+  "slug": "stateviz",
+  "title": "StateViz",
+  "desc": "VS Code state-tree visualiser.",
+  "group": "oss",
+  "groupLabel": "OSS · dev tools",
+  "accent": "#D97706",
+  "accentSoft": "#FBEFD9",
+  "accentInk": "#7A3E04",
+  "year": "2024",
+  "role": "Personal R&D",
+  "links": [
+    { "label": "VS Code Marketplace", "href": "https://marketplace.visualstudio.com" }
+  ]
+}

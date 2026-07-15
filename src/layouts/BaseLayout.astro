@@ -1,0 +1,95 @@
+---
+// BaseLayout.astro: shared chrome for every page.
+export interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+  styles?: string[];     // additional stylesheet hrefs (CSS files in /public/assets/styles/)
+  scripts?: string[];    // additional script srcs (JS files in /public/assets/scripts/)
+  showCanonical?: boolean;
+}
+const {
+  title,
+  description = 'Vignesh K, solutions architect, fourteen years. Portfolio.',
+  bodyClass = '',
+  styles = [],
+  scripts = [],
+  showCanonical = true,
+} = Astro.props;
+
+const pathname = Astro.url.pathname.replace(/\/index\.html$/, '/').replace(/\/$/, '') || '/';
+
+const navLinks = [
+  { href: '/work',       label: 'Work' },
+  { href: '/projects/',  label: 'Projects' },
+  { href: '/notes/',     label: 'Notes' },
+  { href: '/about',      label: 'About' },
+];
+
+const isActive = (href: string) => {
+  if (href === '/') return pathname === '/';
+  const trim = href.replace(/\/$/, '');
+  return pathname === trim || pathname.startsWith(trim + '/');
+};
+
+const favicon = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%234F46E5'/><text x='16' y='22' font-family='Georgia' font-size='18' font-weight='bold' fill='white' text-anchor='middle'>V</text></svg>`;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" href={favicon} />
+  {showCanonical && <link rel="canonical" href={new URL(pathname, Astro.site).toString()} />}
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="stylesheet" href="/assets/styles/base.css" />
+  {styles.map((s) => <link rel="stylesheet" href={`/assets/styles/${s}`} />)}
+</head>
+<body class={bodyClass}>
+  <header class="topbar" id="topbar">
+    <div class="topbar__inner">
+      <a class="topbar__mark" href="/">
+        <span class="dot" aria-hidden="true"></span>
+        Vignesh K.
+      </a>
+      <nav class="topbar__links">
+        {navLinks.map((l) => (
+          <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
+        ))}
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="footer">
+    <div>
+      <div class="footer__brand">Vignesh K.</div>
+      <div class="footer__copy">
+        <p>Vignesh K · Bengaluru, India</p>
+        <p>
+          <a href="mailto:vignesh0702@gmail.com">vignesh0702@gmail.com</a> ·
+          <a href="https://github.com/vkfolio">GitHub</a> ·
+          <a href="https://www.linkedin.com/in/vigneshkarnika">LinkedIn</a>
+        </p>
+      </div>
+    </div>
+    <div class="footer__tools">
+      <button class="footer__tool" id="themeToggle" aria-pressed="false">Theme</button>
+      <a class="footer__tool" href="/Vignesh_K_R.pdf" download>Download Resume</a>
+    </div>
+  </footer>
+
+  <script is:inline src="/assets/scripts/chrome.js"></script>
+  <script is:inline src="/assets/scripts/fx.js"></script>
+  {scripts.map((s) => <script is:inline src={`/assets/scripts/${s}`}></script>)}
+</body>
+</html>

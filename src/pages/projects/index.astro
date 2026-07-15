@@ -1,0 +1,475 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const projects = await getCollection('projects');
+
+const destinationOverrides: Record<string, string> = {
+  'vizlang-studio': 'https://github.com/vkfolio/Vizlang',
+  'oriosearch': 'https://github.com/vkfolio/orio-search',
+  'olla-chat': 'https://marketplace.visualstudio.com/items?itemName=vigneshkarnika.olla-chat',
+  'pydebug': 'https://marketplace.visualstudio.com/items?itemName=vigneshkarnika.pydebugvisualizerhelper',
+  'stateviz': 'https://marketplace.visualstudio.com/items?itemName=vigneshkarnika.stateviz',
+};
+
+const linkedProjects = projects
+  .map((project) => ({
+    ...project,
+    destination: destinationOverrides[project.data.slug] ?? project.data.links?.[0]?.href,
+  }))
+  .filter((project): project is typeof project & { destination: string } => Boolean(project.destination));
+
+const grouped: Record<string, typeof linkedProjects> = {};
+for (const p of linkedProjects) {
+  (grouped[p.data.group] = grouped[p.data.group] || []).push(p);
+}
+
+const ROOM_GROUPS = [
+  { id: 'oss', label: 'Open source', desc: 'Tools I keep needing.' },
+  { id: 'personal', label: 'Personal R&D', desc: 'Research, not products.' },
+] as const;
+
+// slugs that have a real thumbnail in /public/assets/projects/<slug>.png
+const thumbs = new Set([
+  'vizlang-studio', 'oriosearch', 'sable', 'a2ui-vue', 'pydebug', 'stateviz',
+]);
+
+const stats = [
+  { value: linkedProjects.length, label: 'Projects' },
+  { value: grouped['oss']?.length ?? 0, label: 'Open source' },
+  { value: grouped['personal']?.length ?? 0, label: 'Personal R&D' },
+  { value: 1, label: 'Patent' },
+];
+---
+
+<BaseLayout
+  title="Projects · Vignesh K"
+  description="Open-source tools and personal R&D projects."
+>
+  <section class="projects-page shell">
+    <div class="projects-page__head animate-fade-in-up">
+      <div>
+        <p class="section-label">Projects</p>
+        <h1>Independent work.</h1>
+        <p class="lead">
+          Small tools I keep needing, linked directly to where they live.
+        </p>
+      </div>
+      <div class="projects-page__stats">
+        {stats.map((s) => (
+          <div class="stat">
+            <span class="stat__value">{s.value}</span>
+            <span class="stat__label">{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <section class="recent animate-fade-in-up delay-1" aria-label="Recent">
+      <p class="recent__eyebrow">Recent</p>
+      <a class="recent__card" href="/projects/vmotionx">
+        <div class="recent__media">
+          <img src="/assets/projects/vmotionx.png" alt="VMotionX authoring viewport" loading="lazy" />
+        </div>
+        <div class="recent__body">
+          <div class="recent__meta">
+            <span class="recent__badge">Work in progress</span>
+            <span class="recent__dot">·</span>
+            <span>2026</span>
+            <span class="recent__dot">·</span>
+            <span>Personal R&amp;D</span>
+          </div>
+          <h2>VMotionX</h2>
+          <p class="recent__lead">Type a prompt → 3D motion for characters and robots → export for your DCC or rig. Fully offline.</p>
+          <p>
+            A self-contained desktop studio that turns a plain-text prompt into 3D articulated
+            motion, then lets you author it like any other clip: pose joints, capture and
+            interpolate keyframes, route the subject through an environment with waypoints and
+            foot-locks, extend a motion past its single-shot length, and export clean data to
+            Blender, Unreal, Unity, or a robotics pipeline. It began as a character-animation tool,
+            but because it authors joint trajectories on an articulated rig, the same workflow
+            carries over to humanoid robots and other articulated systems. The generation engine
+            runs entirely on-device; its internals are proprietary and still evolving.
+          </p>
+          <span class="recent__link">Read the overview →</span>
+        </div>
+      </a>
+
+      <a class="recent__card recent__card--flip" href="https://vclaw.vkfolio.com" target="_blank" rel="noopener" style="--recent-accent:#4F46E5;">
+        <div class="recent__media">
+          <img src="/assets/projects/vclaw.png" alt="VClaw fleet control plane" loading="lazy" />
+        </div>
+        <div class="recent__body">
+          <div class="recent__meta">
+            <span class="recent__badge recent__badge--live">Live</span>
+            <span class="recent__dot">·</span>
+            <span>2026</span>
+            <span class="recent__dot">·</span>
+            <span>Personal R&amp;D</span>
+          </div>
+          <h2>VClaw</h2>
+          <p class="recent__lead">A personal AI that operates your own machines. Local-first, with no third party in the loop.</p>
+          <p>
+            One assistant wired into a fleet of your devices (desktop, laptops, home server) that can
+            actually <em>do</em> things: open apps, move files, run commands, grab a screenshot, reboot a
+            box, all from your phone, from anywhere. It runs on your own infrastructure, so no message,
+            file, or command is routed through someone else’s servers, and no outage but your own can
+            take it offline.
+          </p>
+          <span class="recent__link">Visit vclaw.vkfolio.com ↗</span>
+        </div>
+      </a>
+    </section>
+
+    {ROOM_GROUPS.map((g, gi) => (
+      <div class="project-group animate-fade-in-up delay-2">
+        <div class="project-group__header">
+          <h2>{g.label}</h2>
+          <p>{g.desc}</p>
+        </div>
+        <div class="project-grid">
+          {(grouped[g.id] || []).map((r, i) => (
+            <a
+              class="project-card"
+              href={r.destination}
+              target="_blank"
+              rel="noopener"
+              style={`--project-accent: ${r.data.accent}; --project-soft: ${r.data.accentSoft};`}
+              data-span={i === 0 ? '2' : undefined}
+            >
+              {thumbs.has(r.data.slug)
+                ? <div class="project-card__media"><img src={`/assets/projects/${r.data.slug}.png`} alt={`${r.data.title} interface`} loading="lazy" /></div>
+                : <div class="project-card__color"></div>}
+              <div class="project-card__body">
+                <div class="project-card__meta">
+                  <span class="project-card__year">{r.data.year}</span>
+                  <span class="tag" style={`background: ${r.data.accentSoft}; color: ${r.data.accentInk}; border-color: transparent;`}>
+                    {r.data.groupLabel}
+                  </span>
+                </div>
+                <h3>{r.data.title}</h3>
+                <p>{r.data.desc}</p>
+                <span class="project-card__link">Visit project ↗</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <style>
+    .projects-page {
+      padding: var(--s-10) 0 var(--s-10);
+    }
+    .projects-page__head {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: var(--s-10);
+      align-items: end;
+      margin-bottom: var(--s-10);
+      padding-bottom: var(--s-8);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .projects-page__head h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 400;
+      line-height: 1.0;
+      color: var(--ink);
+      margin-bottom: var(--s-4);
+      letter-spacing: -0.03em;
+    }
+    .projects-page__head .lead {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 420px;
+    }
+
+    .projects-page__stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6);
+      align-self: end;
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-1);
+    }
+    .stat__value {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 400;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .stat__label {
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .project-group {
+      margin-bottom: var(--s-12);
+    }
+    .project-group__header {
+      margin-bottom: var(--s-8);
+      display: flex;
+      align-items: baseline;
+      gap: var(--s-4);
+      flex-wrap: wrap;
+    }
+    .project-group__header h2 {
+      font-family: var(--font-display);
+      font-size: var(--t-h2);
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .project-group__header p {
+      font-size: var(--t-small);
+      color: var(--muted);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-5);
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-raised);
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform var(--ease), box-shadow var(--ease), border-color var(--ease);
+      position: relative;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(600px circle at 50% 0%, var(--project-soft), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--ease-slow);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px color-mix(in oklch, var(--project-accent) 12%, transparent);
+      border-color: color-mix(in oklch, var(--project-accent) 20%, var(--hairline));
+    }
+    .project-card:hover::before {
+      opacity: 1;
+    }
+    .project-card__color {
+      height: 80px;
+      width: 100%;
+      background: var(--project-accent);
+      position: relative;
+      z-index: 1;
+    }
+    .project-card__media {
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      overflow: hidden;
+      background: var(--project-soft);
+      border-bottom: 1px solid var(--hairline);
+      position: relative;
+      z-index: 1;
+    }
+    .project-card__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform var(--ease-slow);
+    }
+    .project-card:hover .project-card__media img {
+      transform: scale(1.04);
+    }
+    .project-card__body {
+      padding: var(--s-5) var(--s-6) var(--s-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+    .project-card__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-3);
+      margin-bottom: var(--s-1);
+    }
+    .project-card__year {
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .project-card h3 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+    .project-card p {
+      font-size: var(--t-small);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      flex: 1;
+    }
+    .project-card__link {
+      font-size: var(--t-small);
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: var(--s-2);
+      transition: color var(--ease);
+    }
+    .project-card:hover .project-card__link {
+      color: var(--accent-hover);
+    }
+
+    /* recent: featured writeup at the top of the page */
+    .recent {
+      --recent-accent: #4A7EC8;
+      margin-bottom: var(--s-12);
+      padding-bottom: var(--s-12);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .recent__eyebrow {
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--s-5);
+    }
+    .recent__card {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: var(--s-8);
+      align-items: stretch;
+      background: var(--bg-raised);
+      border: 1px solid var(--hairline);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform var(--ease), box-shadow var(--ease), border-color var(--ease);
+    }
+    .recent__card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 56px color-mix(in oklch, var(--recent-accent) 14%, transparent);
+      border-color: color-mix(in oklch, var(--recent-accent) 26%, var(--hairline));
+    }
+    .recent__media {
+      background: #0f1116;
+      overflow: hidden;
+      min-height: 280px;
+    }
+    .recent__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left center;
+      display: block;
+    }
+    .recent__body {
+      padding: var(--s-8) var(--s-8) var(--s-8) 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+      justify-content: center;
+    }
+    .recent__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--s-2);
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .recent__dot { color: var(--hairline); }
+    .recent__badge {
+      background: #E4ECF7;
+      color: #1E3A5F;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+    .recent__body h2 {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 5vw, 60px);
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-top: var(--s-1);
+    }
+    .recent__lead {
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .recent__body p:not(.recent__lead) {
+      font-size: var(--t-small);
+      line-height: 1.7;
+      color: var(--ink-soft);
+    }
+    .recent__link {
+      font-size: var(--t-small);
+      font-weight: 600;
+      color: var(--recent-accent);
+      margin-top: var(--s-2);
+    }
+    .recent__card:hover .recent__link { color: var(--accent-hover); }
+
+    .recent__card + .recent__card { margin-top: var(--s-6); }
+    .recent__card--flip { grid-template-columns: 1fr 1.05fr; }
+    .recent__card--flip .recent__media { order: 2; }
+    .recent__card--flip .recent__body { order: 1; padding: var(--s-8) 0 var(--s-8) var(--s-8); }
+    .recent__badge--live { background: #E0E7FF; color: #312E81; }
+
+    @media (max-width: 860px) {
+      .recent__card { grid-template-columns: 1fr; }
+      .recent__media { min-height: 200px; }
+      .recent__body { padding: var(--s-6); }
+      .recent__card--flip .recent__media { order: 0; }
+      .recent__card--flip .recent__body { order: 0; padding: var(--s-6); }
+    }
+
+    @media (max-width: 960px) {
+      .projects-page__head {
+        grid-template-columns: 1fr;
+        gap: var(--s-8);
+      }
+      .project-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+      .projects-page__stats {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .stat__value {
+        font-size: 28px;
+      }
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,412 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const roles = [
+  {
+    when: { strong: 'Streamoid Technologies', at: 'Solutions Architect', range: '2017–present', duration: '9 yrs' },
+    title: 'Solutions Architect',
+    company: 'Streamoid Technologies',
+    initial: 'S',
+    anchor: 'streamoid',
+    skills: ['Unreal Engine', 'WebGL', 'WASM', 'LangGraph', 'Go', 'WebSockets', 'Redis', 'LLM', 'Knowledge Graphs'],
+    projects: [
+      ['Artifax',    'AI-native WebGL/WASM canvas; multi-agent LLM orchestration on LangGraph (planner–executor–validator); brand-aware knowledge graph; real-time collab over Go/WebSockets + Redis. Used by Puma, Ajio, ABFRL.'],
+      ['Desara',     'Cloud-streamed Unreal Engine 3D design studio. C++ UE, Node.js SFU + signaling, WebRTC pixel streaming, DLSS-based GPU orchestration on RTX 4090. In LCF curriculum.'],
+      ['Catalogix',  'Microservices cataloging serving Puma / Ajio / ABFRL. MongoDB, MQTT, distributed classifiers. 70% turnaround reduction.'],
+      ['Photogenix', 'Flat-image → model photoshoot via diffusion + custom LoRA adapters. Synthetic-data pipeline for downstream classifiers.'],
+    ],
+  },
+  {
+    when: { strong: 'Streamoid', at: 'Senior Android Developer', range: '2016–2017', duration: '1 yr' },
+    title: 'Senior Android Developer',
+    company: 'Streamoid Technologies',
+    initial: 'S',
+    anchor: 'streamoid-android',
+    skills: ['Android', 'iOS', 'ML', 'Kotlin'],
+    projects: [
+      ['PIQIT',  'Personal-wardrobe app with an ML-driven recommendation engine.'],
+      ['Eenadu', 'High-scale Android / iOS news app at 100K+ concurrent users · 40% faster load times.'],
+    ],
+  },
+  {
+    when: { strong: 'Dejaview Concepts', at: 'Android Developer', range: '2014–2016', duration: '2 yrs' },
+    title: 'Android Developer',
+    company: 'Dejaview Concepts',
+    initial: 'D',
+    anchor: 'dejaview',
+    skills: ['Android', 'BLE', 'GPS', 'RFID', 'IoT'],
+    projects: [
+      ['Alpinist', 'Hybrid BLE / GPS / RFID positioning at sub-meter accuracy for alpine sports up to 120 mph. Validated at Revelstoke (CA) and The Venetian Resort (LV). 50% accuracy improvement over GPS-only.'],
+    ],
+  },
+  {
+    when: { strong: 'NuNet3', at: 'IT Consultant', range: '2013–2014', duration: '1 yr' },
+    title: 'IT Consultant',
+    company: 'NuNet3',
+    initial: 'N',
+    anchor: 'nunet3',
+    skills: ['SIP', 'Kamailio', 'ASP.NET', 'Video'],
+    projects: [
+      ['Kamailio SIP', 'SIP video calling solution for a "Talk to Celebrity" platform.'],
+      ['MDVantage',    'ASP.NET health-insurance solution.'],
+    ],
+  },
+  {
+    when: { strong: 'Tvishi Tech', at: 'Android Developer', range: '2012–2013', duration: '1 yr' },
+    title: 'Android Developer',
+    company: 'Tvishi Tech Services',
+    initial: 'T',
+    anchor: 'tvishi',
+    skills: ['Android', 'Unity3D', 'Social'],
+    projects: [
+      ['Paintit', 'Social Android app.'],
+      ['Live-in Jeans', 'Unity3D promotional game for the campaign.'],
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Work · Vignesh K"
+  description="14 years of production systems across Unreal Engine, WebGL/WASM, multi-agent LLMs, WebRTC, Android."
+>
+  <section class="work-page shell">
+    <div class="work-page__head animate-fade-in-up">
+      <p class="section-label">Work</p>
+      <h1>Fourteen years<br />of shipping.</h1>
+      <p class="lead">
+        Production systems across <span class="muted">Unreal Engine · WebGL / WASM · LLM multi-agent · GraphRAG &amp; knowledge graphs · diffusion / LoRA · WebRTC pixel streaming · real-time collaboration · Android / iOS.</span>
+      </p>
+    </div>
+
+    <div class="patent animate-fade-in-up delay-1" id="patent">
+      <div class="patent__icon">✦</div>
+      <div class="patent__body">
+        <strong>Method and System for Automated Product Video Generation for Fashion Items.</strong>
+        <span class="patent__id">US 20240078576 · published 2023</span>
+      </div>
+    </div>
+
+    <div class="timeline">
+      {roles.map((r, i) => (
+        <div class="timeline__item animate-fade-in-up" style={`animation-delay: ${0.12 * (i + 2)}s;`} id={r.anchor}>
+          <div class="timeline__watermark" aria-hidden="true">{r.initial}</div>
+          <div class="timeline__left">
+            <div class="timeline__dot"></div>
+            {i < roles.length - 1 && <div class="timeline__line"></div>}
+          </div>
+          <div class="timeline__content">
+            <div class="timeline__meta">
+              <h3>{r.company}</h3>
+              <span class="timeline__title">{r.title}</span>
+              <span class="timeline__when">
+                <span class="timeline__duration">{r.when.duration}</span>
+                <span class="timeline__yrs">{r.when.range}</span>
+              </span>
+            </div>
+            <div class="timeline__skills">
+              {r.skills.map((skill) => (
+                <span class="skill-pill">{skill}</span>
+              ))}
+            </div>
+            <div class="timeline__projects">
+              {r.projects.map(([name, body]) => (
+                <div class="timeline__project">
+                  <div class="timeline__project-name">{name}</div>
+                  <div class="timeline__project-desc">{body}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="restricted animate-fade-in-up">
+      <div class="restricted__header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h4>Internal-aligned · not public</h4>
+      </div>
+      <ul>
+        <li><span class="yr">2023</span><span>Knowledge-graph search over private codebases: the problem class lives in the <a href="/notes/private-knowledge-graphs">field note</a>.</span></li>
+        <li><span class="yr">2022</span><span>SDXL fine-tuning for brand-locked visual outputs.</span></li>
+        <li><span class="yr">2020</span><span>Distributed classifier orchestration at catalog scale.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <style>
+    .work-page {
+      padding: var(--s-10) 0 var(--s-10);
+    }
+    .work-page__head {
+      max-width: 720px;
+      margin-bottom: var(--s-10);
+    }
+    .work-page__head h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5.5vw, 72px);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: var(--s-4);
+      letter-spacing: -0.03em;
+    }
+    .work-page__head .lead {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+    .work-page__head .lead .muted {
+      color: var(--muted);
+    }
+
+    .patent {
+      display: flex;
+      gap: var(--s-4);
+      align-items: flex-start;
+      padding: var(--s-6) var(--s-7);
+      background: linear-gradient(135deg, var(--accent-soft), color-mix(in oklch, var(--accent-soft) 60%, var(--bg)));
+      border: 1px solid color-mix(in oklch, var(--accent) 12%, transparent);
+      border-radius: 16px;
+      margin-bottom: var(--s-12);
+    }
+    .patent__icon {
+      font-size: 24px;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .patent__body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-1);
+    }
+    .patent__body strong {
+      font-weight: 600;
+      color: var(--accent-ink);
+      font-size: var(--t-body);
+    }
+    .patent__id {
+      font-size: var(--t-small);
+      color: var(--muted);
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+      margin-bottom: var(--s-12);
+    }
+    .timeline__item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: var(--s-6);
+      align-items: start;
+      position: relative;
+    }
+    .timeline__watermark {
+      position: absolute;
+      top: -24px;
+      right: 0;
+      font-family: var(--font-display);
+      font-size: 140px;
+      font-weight: 400;
+      color: var(--ink);
+      opacity: 0.03;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+    .timeline__left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 48px;
+      padding-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .timeline__dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 4px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent), 0 0 20px color-mix(in oklch, var(--accent) 30%, transparent);
+      flex-shrink: 0;
+    }
+    .timeline__line {
+      width: 2px;
+      flex: 1;
+      min-height: 60px;
+      background: linear-gradient(to bottom, var(--hairline), transparent);
+      margin-top: var(--s-3);
+    }
+    .timeline__content {
+      flex: 1;
+      padding-bottom: var(--s-4);
+      position: relative;
+      z-index: 1;
+    }
+    .timeline__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--s-2) var(--s-3);
+      margin-bottom: var(--s-3);
+    }
+    .timeline__meta h3 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .timeline__title {
+      font-size: var(--t-small);
+      font-weight: 500;
+      color: var(--ink-soft);
+    }
+    .timeline__when {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      margin-left: auto;
+    }
+    .timeline__duration {
+      font-size: var(--t-tiny);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      background: var(--accent);
+      padding: 4px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px color-mix(in oklch, var(--accent) 28%, transparent);
+    }
+    .timeline__yrs {
+      font-size: var(--t-tiny);
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      background: var(--bg-soft);
+      padding: 4px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .timeline__skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+      margin-bottom: var(--s-5);
+    }
+    .skill-pill {
+      font-size: var(--t-tiny);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--ink-soft);
+      background: var(--bg-soft);
+      border: 1px solid var(--hairline);
+      padding: 3px 10px;
+      border-radius: 100px;
+      transition: border-color var(--ease), color var(--ease);
+    }
+    .skill-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .timeline__projects {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .timeline__project {
+      padding: var(--s-3) 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .timeline__project:last-child {
+      border-bottom: none;
+    }
+    .timeline__project-name {
+      font-weight: 600;
+      font-size: var(--t-small);
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .timeline__project-desc {
+      font-size: var(--t-small);
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    .restricted {
+      padding: var(--s-6) var(--s-7);
+      border: 1px dashed var(--hairline);
+      border-radius: 16px;
+      background: var(--bg-soft);
+    }
+    .restricted__header {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      margin-bottom: var(--s-5);
+      color: var(--muted);
+    }
+    .restricted__header h4 {
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .restricted ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .restricted li {
+      display: flex;
+      gap: var(--s-4);
+      font-size: var(--t-small);
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .restricted li .yr {
+      font-weight: 600;
+      color: var(--ink);
+      flex-shrink: 0;
+      min-width: 40px;
+    }
+    .restricted li a {
+      color: var(--accent);
+      border-bottom: 1px solid color-mix(in oklch, var(--accent) 25%, transparent);
+      transition: border-color var(--ease);
+    }
+    .restricted li a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .timeline__meta h3 {
+        font-size: 24px;
+        width: 100%;
+      }
+      .timeline__when {
+        margin-left: 0;
+      }
+      .timeline__watermark {
+        font-size: 80px;
+        top: -8px;
+      }
+      .restricted li {
+        flex-direction: column;
+        gap: var(--s-1);
+      }
+    }
+  </style>
+</BaseLayout>

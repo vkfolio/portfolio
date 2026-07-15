@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const work = [
+  { name: 'Artifax', type: 'AI-native design platform', description: 'An infinite, GPU-accelerated design canvas orchestrated by planner–executor–validator agents, built for enterprise creative workflows.', outcome: 'Used by Puma, Ajio & ABFRL', stack: ['LangGraph', 'WebGL / WASM', 'Multi-agent AI'], image: '/assets/projects/artifax.png', href: 'https://streamoid.com/artifax', tone: 'violet' },
+  { name: 'Desara', type: 'Real-time 3D platform', description: 'A cloud-streamed Unreal Engine studio that brings photoreal 3D product design to the browser, without workstation-class hardware.', outcome: 'Adopted by London College of Fashion', stack: ['Unreal Engine', 'WebRTC', 'GPU orchestration'], image: '/assets/projects/desara.png', href: 'https://desara.streamoid.com/', tone: 'cyan' },
+  { name: 'Catalogix', type: 'Enterprise ML systems', description: 'Automated cataloging and AI photoshoot infrastructure built around distributed classifiers, diffusion models, and custom LoRA adapters.', outcome: '70% faster catalog turnaround', stack: ['Computer vision', 'Diffusion', 'Distributed systems'], image: '/assets/projects/catalogix.png', href: 'https://streamoid.com/catalogix', tone: 'amber' },
+];
+
+const projects = [
+  { name: 'VMotionX', description: 'Type a prompt and author 3D motion for characters and robots, fully offline. Pose it, extend it, and export it to your DCC or rig.', meta: 'Realtime 3D · Work in progress', image: '/assets/projects/vmotionx.png', href: '/projects/vmotionx' },
+  { name: 'VClaw', description: 'Local-first control plane for a fleet of AI-operated machines.', meta: 'AI systems · 2026', image: '/assets/projects/vclaw.png', href: 'https://vclaw.vkfolio.com' },
+  { name: 'PyPad', description: 'Native Python scratchpad with a live debugger and DSA visualizer.', meta: 'Developer tools · 2026', image: '/assets/projects/pypad.png', href: 'https://pypad.vkfolio.com/' },
+  { name: 'VizLang Studio', description: 'Visual debugging for LangGraph agents, directly inside VS Code.', meta: 'Open source · 2026', image: '/assets/projects/vizlang-studio.png', href: 'https://github.com/vkfolio/Vizlang' },
+];
+
+const articles = [
+  { title: 'Offline Data Transfer on Android Using Ultra Sound FSK & FFT', excerpt: 'Exploring robust offline data transfer using ultrasonic audio, frequency-shift keying, and signal processing on Android.', image: '/assets/articles/ultrasound-fsk.png', href: 'https://medium.com/@vigneshkarnika/offline-data-transfer-on-android-using-ultra-sound-fsk-fft-4032dd8c7833' },
+  { title: 'A Decentralized Ride-Sharing DApp on Ethereum', excerpt: 'How a weekend hackathon project explored ride-sharing infrastructure using blockchain and IoT.', image: '/assets/articles/ride-sharing-dapp.png', href: 'https://medium.com/@vigneshkarnika/a-decentralized-ride-sharing-dapp-on-ethereum-553570c23d12' },
+  { title: 'When This OMR Scanner Was a Computer Vision Feat', excerpt: 'A look back at building a smartphone OMR scanner when mobile computer vision was still genuinely difficult.', image: '/assets/articles/omr-scanner.png', href: 'https://medium.com/@vigneshkarnika/when-this-omr-scanner-was-a-computer-vision-feat-81f3bdb0a2b8' },
+];
+
+const press = {
+  outlet: 'RFID Journal',
+  title: 'Paparazzi Pass Lets Ski Resort Visitors Take Slope-Side Selfies',
+  excerpt: 'BLE beacons and an app from DejaView Concepts automatically capture action videos of skiers and snowboarders as they pass through beacon zones, letting them view, edit, and share the footage.',
+  image: '/assets/press/rfid-paparazzi-pass.jpg',
+  href: 'https://www.rfidjournal.com/news/paparazzi-pass-lets-ski-resort-visitors-take-slope-side-selfies/74672/',
+};
+
+const certifications = [
+  { issuer: 'IBM · Coursera', name: 'IBM Data Science Professional', meta: 'Oct 2021 · T4ZSDX43426J', image: '/assets/certs/ibm-data-science.png', href: 'https://www.coursera.org/account/accomplishments/specialization/certificate/T4ZSDX43426J' },
+  { issuer: 'DeepLearning.AI · Coursera', name: 'TensorFlow Developer', meta: 'Sep 2021 · BYKSRWDQSAD2', image: '/assets/certs/tensorflow-developer.png', href: 'https://www.coursera.org/account/accomplishments/specialization/certificate/BYKSRWDQSAD2' },
+  { issuer: 'Unreal Authorized Training · BlueStone', name: 'Unreal Engine Essentials', meta: 'Mar 2022', image: '/assets/certs/unreal-essentials.png', href: 'https://drive.google.com/file/d/1-REL5nSK59757DLfcQsIPn6TvuvdiVIo/view' },
+];
+---
+
+<BaseLayout title="Vignesh K. · Solutions Architect & Product Engineer" description="Solutions architect building ambitious AI, real-time 3D, and developer platforms from first principles to production." bodyClass="home" styles={['home.css']}>
+  <section class="hero shell">
+    <div class="hero__copy">
+      <div class="availability animate-fade-in-up"><span class="availability__dot"></span>Bengaluru, India · Building at Streamoid</div>
+      <h1 class="hero__title animate-fade-in-up delay-1">I turn hard ideas into<br /><em>products that ship.</em></h1>
+      <p class="hero__lede animate-fade-in-up delay-2">Solutions architect and hands-on engineer with 14 years of experience turning difficult ideas into dependable products across AI agents, real-time 3D, cloud systems, and developer tools.</p>
+      <div class="hero__actions animate-fade-in-up delay-3">
+        <a class="button button--primary" href="#selected-work">Explore selected work <span>↘</span></a>
+        <a class="button button--text" href="mailto:vignesh0702@gmail.com">Start a conversation <span>→</span></a>
+      </div>
+    </div>
+    <aside class="hero__profile animate-fade-in-up delay-3" aria-label="Profile summary">
+      <div class="profile-card__image"><img src="/assets/myphoto.jpg" alt="Vignesh K." /></div>
+      <div class="profile-card__body"><p class="profile-card__name">Vignesh K.</p><p>Solutions Architect</p><div class="profile-card__rule"></div><div class="profile-card__links"><a href="https://github.com/vkfolio">GitHub ↗</a><a href="https://www.linkedin.com/in/vigneshkarnika">LinkedIn ↗</a></div></div>
+    </aside>
+  </section>
+
+  <section class="proof" aria-label="Career impact"><div class="proof__inner shell" data-reveal data-stagger>
+    <div class="proof__item"><strong>14</strong><span>years building<br />production systems</span></div>
+    <div class="proof__item"><strong>01</strong><span>published<br />US patent</span></div>
+    <div class="proof__item"><strong>70%</strong><span>faster catalog<br />turnaround</span></div>
+    <div class="proof__item"><strong>3+</strong><span>enterprise brands<br />in production</span></div>
+  </div></section>
+
+  <section class="selected shell" id="selected-work">
+    <div class="section-intro" data-reveal><div><p class="eyebrow">Selected work</p><h2>Systems with consequence.</h2></div><p>Flagship platforms where architecture, product thinking, and execution had to work as one.</p></div>
+    <div class="case-list">
+      {work.map((project, index) => (
+        <a class={`case case--${project.tone}`} href={project.href} target="_blank" rel="noopener" data-reveal>
+          <div class="case__content">
+            <div class="case__number">0{index + 1} / 03</div><p class="case__type">{project.type}</p><h3>{project.name}</h3>
+            <p class="case__description">{project.description}</p><p class="case__outcome"><span>↳</span>{project.outcome}</p>
+            <ul class="case__stack" aria-label="Technologies">{project.stack.map((item) => <li>{item}</li>)}</ul>
+            <span class="case__link">View platform <span>↗</span></span>
+          </div>
+          <div class="case__visual"><img src={project.image} alt={`${project.name} product interface`} loading="lazy" /></div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="spotlight" aria-label="Currently building VMotionX">
+    <video class="spotlight__video" autoplay muted loop playsinline preload="metadata" poster="/assets/projects/vmotionx.png">
+      <source src="/assets/video/vmotionx.webm" type="video/webm" />
+      <source src="/assets/video/vmotionx.mp4" type="video/mp4" />
+    </video>
+    <div class="spotlight__scrim"></div>
+    <div class="spotlight__inner shell" data-reveal>
+      <p class="eyebrow">In the lab · Currently building</p>
+      <h2>VMotionX</h2>
+      <p class="spotlight__lede">Type a prompt and author 3D motion for characters and robots, fully offline. Pose it, extend the motion, and export straight to your DCC or rig. Real-time and GPU-accelerated.</p>
+      <ul class="spotlight__stack" aria-label="Technologies">
+        <li>Text → Motion</li><li>Characters + robots</li><li>Real-time 3D</li><li>On-device</li>
+      </ul>
+      <a class="spotlight__link" href="/projects/vmotionx">Explore the project <span>↗</span></a>
+    </div>
+  </section>
+
+  <section class="patent-section shell" data-reveal>
+    <p class="eyebrow">Intellectual property</p>
+    <a class="patent-card" href="https://patents.google.com/patent/US20240078576A1/en" target="_blank" rel="noopener"><span class="patent-card__icon">✦</span><div><p>Published US patent</p><h3>Automated Product Video Generation for Fashion Items</h3><span>US 2024/0078576 A1 ↗</span></div><strong>View on<br />Google Patents ↗</strong></a>
+  </section>
+
+  <section class="recognition shell" data-reveal>
+    <div class="recognition__story">
+      <div class="recognition__quote"><p class="eyebrow">Recognition</p><blockquote>“These students are being given the opportunity to trial an exciting new AI research and product development tool, Desara AI.”</blockquote><p class="recognition__source">Julia Redman · Lecturer & Unit Lead, London College of Fashion</p></div>
+      <a class="recognition__post" href="https://www.linkedin.com/posts/julia-redman-bsc-pgcert-afhea-fcmi-8632b89_we-kicked-off-the-new-academic-year-last-ugcPost-7380976646201290752-r9ee/" target="_blank" rel="noopener" aria-label="View the London College of Fashion post on LinkedIn"><img src="/assets/highlights/lcf-desara-linkedin.png" alt="LinkedIn post about Desara AI at London College of Fashion" loading="lazy" /><span>View original post ↗</span></a>
+    </div>
+  </section>
+
+  <section class="press shell" data-reveal>
+    <p class="eyebrow">In the press</p>
+    <a class="press-card" href={press.href} target="_blank" rel="noopener">
+      <div class="press-card__media"><img src={press.image} alt={press.title} loading="lazy" /></div>
+      <div class="press-card__body">
+        <p class="press-card__outlet">{press.outlet}</p>
+        <h3>{press.title}</h3>
+        <p class="press-card__excerpt">{press.excerpt}</p>
+        <span class="press-card__link">Read on {press.outlet} ↗</span>
+      </div>
+    </a>
+  </section>
+
+  <section class="certs shell" data-reveal>
+    <div class="section-intro section-intro--compact"><div><p class="eyebrow">Certifications</p><h2>Credentials.</h2></div><a href="/resume">View resume →</a></div>
+    <div class="cert-grid" data-reveal data-stagger>
+      {certifications.map((c) => (
+        <a class="cert" href={c.href} target="_blank" rel="noopener">
+          <div class="cert__media"><img src={c.image} alt={`${c.name} certificate`} loading="lazy" /></div>
+          <div class="cert__body"><p class="cert__issuer">{c.issuer}</p><h3>{c.name}</h3><p class="cert__meta">{c.meta}</p><span class="cert__verify">Verify ↗</span></div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="principles shell" data-reveal>
+    <div class="principles__heading"><p class="eyebrow">How I work</p><h2>Architecture is a product discipline.</h2></div>
+    <div class="principles__grid">
+      <article><span>01</span><h3>Start with the constraint</h3><p>The best architecture emerges from a precise understanding of the user, the economics, and the operational reality.</p></article>
+      <article><span>02</span><h3>Prototype the hard part</h3><p>I de-risk the unknowns early (rendering, latency, model behaviour, and scale) before the surrounding system becomes expensive.</p></article>
+      <article><span>03</span><h3>Stay close to the code</h3><p>Strategy is strongest when grounded in implementation. I lead architecture while remaining hands-on with the critical path.</p></article>
+    </div>
+  </section>
+
+  <section class="independent"><div class="shell">
+    <div class="section-intro section-intro--compact" data-reveal><div><p class="eyebrow">Independent work</p><h2>Tools I wanted to exist.</h2></div><a href="/projects/">View all projects →</a></div>
+    <div class="project-grid" data-reveal data-stagger>{projects.map((project) => (
+      <a class="project" href={project.href} target="_blank" rel="noopener"><div class="project__image"><img src={project.image} alt="" loading="lazy" /></div><div class="project__body"><p class="project__meta">{project.meta}</p><h3>{project.name}<span>↗</span></h3><p>{project.description}</p></div></a>
+    ))}</div>
+  </div></section>
+
+  <section class="writing shell" data-reveal>
+    <div class="section-intro section-intro--compact"><div><p class="eyebrow">Writing & explorations</p><h2>Notes from building.</h2></div><a href="https://medium.com/@vigneshkarnika" target="_blank" rel="noopener">View Medium profile ↗</a></div>
+    <div class="article-grid">
+      {articles.map((article) => (
+        <a class="article" href={article.href} target="_blank" rel="noopener">
+          <div class="article__image"><img src={article.image} alt="" loading="lazy" /></div>
+          <div class="article__body"><p class="article__source">Medium · Technical writing</p><h3>{article.title}</h3><p>{article.excerpt}</p><span>Read article ↗</span></div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="contact shell" data-reveal><p class="eyebrow">Always exploring challenging problems</p><h2>Working on something<br />hard and interesting</h2><a class="button button--light" href="mailto:vignesh0702@gmail.com">vignesh0702@gmail.com <span>↗</span></a></section>
+</BaseLayout>

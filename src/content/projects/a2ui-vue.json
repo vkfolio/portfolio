@@ -1,0 +1,15 @@
+{
+  "slug": "a2ui-vue",
+  "title": "A2UI Vue",
+  "desc": "Vue 3 renderer for Google's A2UI protocol.",
+  "group": "oss",
+  "groupLabel": "OSS · UI runtimes",
+  "accent": "#41B883",
+  "accentSoft": "#E1F5EA",
+  "accentInk": "#1F6F4B",
+  "year": "2025",
+  "role": "Personal R&D",
+  "links": [
+    { "label": "github.com/vkfolio/a2ui-vue", "href": "https://github.com/vkfolio/a2ui-vue" }
+  ]
+}

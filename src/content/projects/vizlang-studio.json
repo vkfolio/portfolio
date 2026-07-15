@@ -1,0 +1,17 @@
+{
+  "slug": "vizlang-studio",
+  "title": "VizLang Studio",
+  "desc": "Visual debugger for LangGraph agents.",
+  "group": "oss",
+  "groupLabel": "OSS · dev tools",
+  "accent": "#1F8054",
+  "accentSoft": "#E4F1EA",
+  "accentInk": "#0F4A2E",
+  "year": "2025",
+  "role": "Personal R&D",
+  "fieldNote": "why-i-built-vizlang",
+  "links": [
+    { "label": "VS Code Marketplace", "href": "https://marketplace.visualstudio.com" },
+    { "label": "github.com/vkfolio/Vizlang", "href": "https://github.com/vkfolio/Vizlang" }
+  ]
+}

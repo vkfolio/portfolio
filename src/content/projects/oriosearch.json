@@ -1,0 +1,16 @@
+{
+  "slug": "oriosearch",
+  "title": "OrioSearch",
+  "desc": "Self-hosted, Tavily-compatible web search API.",
+  "group": "oss",
+  "groupLabel": "OSS · infrastructure",
+  "accent": "#C04A2B",
+  "accentSoft": "#F5E6DE",
+  "accentInk": "#6B2412",
+  "year": "2025",
+  "role": "Personal R&D",
+  "fieldNote": "private-knowledge-graphs",
+  "links": [
+    { "label": "github.com/vkfolio/orio-search", "href": "https://github.com/vkfolio/orio-search" }
+  ]
+}

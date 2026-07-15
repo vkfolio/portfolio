@@ -1,0 +1,15 @@
+{
+  "slug": "pydebug",
+  "title": "PyDebug Visualizer Helper",
+  "desc": "Visualise Python data structures while debugging.",
+  "group": "oss",
+  "groupLabel": "OSS · dev tools",
+  "accent": "#3776AB",
+  "accentSoft": "#E1ECF4",
+  "accentInk": "#1E4A6E",
+  "year": "2024",
+  "role": "Personal R&D",
+  "links": [
+    { "label": "VS Code Marketplace", "href": "https://marketplace.visualstudio.com" }
+  ]
+}

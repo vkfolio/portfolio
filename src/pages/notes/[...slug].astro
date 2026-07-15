@@ -1,0 +1,206 @@
+---
+import { type CollectionEntry, getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note },
+  }));
+}
+
+type Props = {
+  note: CollectionEntry<'notes'>;
+};
+
+const { note } = Astro.props;
+const { Content } = await note.render();
+const room = note.data.room ? await getEntry('projects', note.data.room) : null;
+---
+
+<BaseLayout
+  title={`${note.data.title} · field notes`}
+  description={note.data.dek}
+>
+  <article class="essay-page shell">
+    <div class="essay">
+      <div class="essay__crumb">
+        <a href="/notes/">← Field notes</a>
+        {room && <a href={`/projects/${room.data.slug}`}>Attached to {room.data.title}</a>}
+        <span>{note.data.dateLabel} · {note.data.words} words</span>
+      </div>
+      <h1>{note.data.title}</h1>
+      <p class="dek">{note.data.dek}</p>
+      <div class="essay__body">
+        <Content />
+      </div>
+      <div class="essay__foot">
+        {room && <div><a href={`/projects/${room.data.slug}`}>← Back to {room.data.title}</a></div>}
+        <div>Bengaluru · {note.data.dateLabel}</div>
+      </div>
+    </div>
+  </article>
+
+  <style>
+    .essay-page {
+      padding: var(--s-10) 0 var(--s-8);
+    }
+    .essay {
+      max-width: var(--essay-w);
+      margin: 0 auto;
+    }
+    .essay__crumb {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+      align-items: center;
+      font-size: var(--t-small);
+      color: var(--muted);
+      margin-bottom: var(--s-7);
+    }
+    .essay__crumb a {
+      color: var(--accent);
+      transition: color var(--ease);
+    }
+    .essay__crumb a:hover {
+      color: var(--accent-hover);
+    }
+    .essay__crumb span {
+      color: var(--muted-2);
+    }
+    .essay h1 {
+      font-family: var(--font-display);
+      font-size: var(--t-h1);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: var(--s-4);
+    }
+    .essay .dek {
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin-bottom: var(--s-8);
+      padding-bottom: var(--s-6);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .essay__body {
+      font-size: var(--t-body);
+      line-height: 1.75;
+      color: var(--ink);
+    }
+    .essay__body :global(h2) {
+      font-family: var(--font-display);
+      font-size: var(--t-h2);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-top: var(--s-8);
+      margin-bottom: var(--s-4);
+      color: var(--ink);
+    }
+    .essay__body :global(h3) {
+      font-family: var(--font-body);
+      font-size: var(--t-h3);
+      font-weight: 600;
+      margin-top: var(--s-6);
+      margin-bottom: var(--s-3);
+      color: var(--ink);
+    }
+    .essay__body :global(p) {
+      margin-bottom: var(--s-4);
+    }
+    .essay__body :global(a) {
+      color: var(--accent);
+      border-bottom: 1px solid color-mix(in oklch, var(--accent) 25%, transparent);
+      transition: border-color var(--ease);
+    }
+    .essay__body :global(a:hover) {
+      border-bottom-color: var(--accent);
+    }
+    .essay__body :global(ul, ol) {
+      margin-bottom: var(--s-4);
+      padding-left: var(--s-6);
+    }
+    .essay__body :global(li) {
+      margin-bottom: var(--s-2);
+    }
+    .essay__body :global(code) {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 14px;
+      background: var(--bg-soft);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-ink);
+    }
+    .essay__body :global(pre) {
+      background: var(--bg-soft);
+      padding: var(--s-4);
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: var(--s-4);
+      border: 1px solid var(--hairline);
+    }
+    .essay__body :global(pre code) {
+      background: none;
+      padding: 0;
+    }
+    .essay__body :global(blockquote) {
+      border-left: 3px solid var(--accent);
+      padding-left: var(--s-5);
+      margin-left: 0;
+      margin-bottom: var(--s-4);
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+    .essay__body :global(hr) {
+      border: 0;
+      height: 1px;
+      background: var(--hairline);
+      margin: var(--s-7) 0;
+    }
+    .essay__body :global(strong) {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .essay__body :global(figure) {
+      margin: var(--s-6) 0;
+      padding: var(--s-5);
+      background: var(--bg-soft);
+      border: 1px solid var(--hairline);
+      border-radius: 8px;
+    }
+    .essay__body :global(figcaption) {
+      font-size: var(--t-small);
+      color: var(--muted);
+      margin-top: var(--s-3);
+    }
+    .essay__foot {
+      margin-top: var(--s-10);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--s-4);
+      font-size: var(--t-small);
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+    .essay__foot a {
+      color: var(--accent);
+      transition: color var(--ease);
+    }
+    .essay__foot a:hover {
+      color: var(--accent-hover);
+    }
+
+    @media (max-width: 720px) {
+      .essay-page {
+        padding: var(--s-7) 0 var(--s-6);
+      }
+      .essay h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</BaseLayout>

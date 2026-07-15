@@ -1,0 +1,471 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Resume · Vignesh K"
+  description="Vignesh K · résumé. Printable."
+>
+  <div class="resume-page shell">
+    <div class="resume-page__grid">
+      <aside class="resume-page__sidebar">
+        <div class="sidebar__photo">
+          <img src="/assets/myphoto.jpg" alt="Vignesh K" />
+        </div>
+        <div class="sidebar__name">Vignesh K</div>
+        <div class="sidebar__title">Solutions Architect · 14 yrs</div>
+
+        <div class="sidebar__section">
+          <h4>Contact</h4>
+          <div class="sidebar__contact">
+            <a href="mailto:vignesh0702@gmail.com">vignesh0702@gmail.com</a>
+            <span>+91 8088 386 806</span>
+            <a href="https://linkedin.com/in/vigneshkarnika">linkedin.com/in/vigneshkarnika</a>
+            <a href="https://github.com/vkfolio">github.com/vkfolio</a>
+            <span>Bengaluru, IN</span>
+          </div>
+        </div>
+
+        <div class="sidebar__section">
+          <h4>Skills</h4>
+          <div class="sidebar__skills">
+            <div class="skill-item"><span class="skill-dot"></span>Multi-Agent LLM · LangGraph</div>
+            <div class="skill-item"><span class="skill-dot"></span>RAG · Knowledge Graphs</div>
+            <div class="skill-item"><span class="skill-dot"></span>Diffusion · LoRA / QLoRA</div>
+            <div class="skill-item"><span class="skill-dot"></span>Unreal Engine (C++)</div>
+            <div class="skill-item"><span class="skill-dot"></span>WebGL 2 / WASM</div>
+            <div class="skill-item"><span class="skill-dot"></span>WebRTC Pixel Streaming</div>
+            <div class="skill-item"><span class="skill-dot"></span>Cloud · Distributed Systems</div>
+          </div>
+          <div class="sidebar__skill-pills">
+            <span class="pill">Python</span>
+            <span class="pill">C++</span>
+            <span class="pill">Go</span>
+            <span class="pill">Node.js</span>
+            <span class="pill">FastAPI</span>
+            <span class="pill">Flutter</span>
+            <span class="pill">Redis</span>
+            <span class="pill">MongoDB</span>
+            <span class="pill">AWS / GCP</span>
+            <span class="pill">Android / iOS</span>
+          </div>
+        </div>
+
+        <div class="sidebar__section">
+          <h4>Education</h4>
+          <p class="sidebar__edu">B.Tech, Electronics &amp; Communication Engineering <span class="yr">2011</span></p>
+        </div>
+
+        <div class="sidebar__section">
+          <h4>Certifications</h4>
+          <div class="sidebar__certs">
+            <p>Unreal Engine Essentials, Unreal Authorized Training <span class="yr">BlueStone · 2022</span></p>
+            <p>IBM Data Science Professional <span class="yr">IBM · 2021 · T4ZSDX43426J</span></p>
+            <p>TensorFlow Developer <span class="yr">DeepLearning.AI · 2021 · BYKSRWDQSAD2</span></p>
+          </div>
+        </div>
+      </aside>
+
+      <div class="resume-page__main">
+        <div class="resume-page__section">
+          <h2>Summary</h2>
+          <p>Solution architect with 14+ years building and scaling production ML, AI systems, multi-agent platforms, and real-time 3D infrastructure end-to-end. Currently Lead Architect of two flagship Streamoid platforms: Artifax (AI-native WebGL/WASM canvas with multi-agent LLM orchestration) and Desara (cloud-streamed Unreal Engine 3D studio, in the London College of Fashion curriculum). Shipped enterprise AI products used by Fortune 500 retail brands including Puma, Ajio, and ABFRL. Published on US Patent 20240078576 for automated fashion video generation.</p>
+        </div>
+
+        <div class="resume-page__section">
+          <h2>Experience</h2>
+          <div class="resume-page__role">
+            <div class="resume-page__role-head">
+              <strong>Streamoid Technologies</strong>
+              <span>Solutions Architect</span>
+              <span class="yrs">2017–present</span>
+            </div>
+            <ul>
+              <li><strong>Artifax</strong>: AI-native WebGL/WASM canvas; multi-agent LLM orchestration (LangGraph planner–executor–validator); brand-aware knowledge graph; real-time collab on Go + WebSockets + Redis. Used by Puma, Ajio, ABFRL.</li>
+              <li><strong>Desara</strong>: Cloud-streamed Unreal Engine 3D studio. C++ UE, Node.js SFU + signaling, WebRTC pixel streaming, DLSS-based GPU orchestration: 45% higher compute utilization, up to 15 concurrent sessions on a single RTX 4090. Adopted into the LCF curriculum.</li>
+              <li><strong>Catalogix</strong>: Microservices cataloging serving Puma / Ajio / ABFRL across millions of SKUs (MongoDB, MQTT, distributed classifiers). 70% turnaround reduction at 93% data accuracy.</li>
+              <li><strong>Photogenix</strong>: Flat-image → model photoshoot via diffusion + custom LoRA adapters; synthetic-data pipeline for downstream classifiers.</li>
+            </ul>
+          </div>
+          <div class="resume-page__role">
+            <div class="resume-page__role-head">
+              <strong>Streamoid</strong>
+              <span>Senior Android Developer</span>
+              <span class="yrs">2016–2017</span>
+            </div>
+            <ul>
+              <li>PIQIT personal-wardrobe app with an ML-powered recommendation engine; Eenadu Android/iOS news app at 100K+ concurrent users, 40% faster load times.</li>
+            </ul>
+          </div>
+          <div class="resume-page__role">
+            <div class="resume-page__role-head">
+              <strong>Dejaview Concepts</strong>
+              <span>Android Developer</span>
+              <span class="yrs">2014–2016</span>
+            </div>
+            <ul>
+              <li>Hybrid BLE / GPS / RFID positioning at sub-meter accuracy for alpine sports up to 120 mph. Validated at Revelstoke and Venetian Resort. 50% accuracy improvement over GPS-only.</li>
+            </ul>
+          </div>
+          <div class="resume-page__role">
+            <div class="resume-page__role-head">
+              <strong>NuNet3</strong>
+              <span>IT Consultant</span>
+              <span class="yrs">2013–2014</span>
+            </div>
+            <ul>
+              <li>Kamailio SIP video calling; MDVantage ASP.NET solution.</li>
+            </ul>
+          </div>
+          <div class="resume-page__role">
+            <div class="resume-page__role-head">
+              <strong>Tvishi Tech Services</strong>
+              <span>Android Developer</span>
+              <span class="yrs">2012–2013</span>
+            </div>
+            <ul>
+              <li>Paintit social Android app; Unity3D promotional game.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="resume-page__section">
+          <h2>Patent</h2>
+          <p>US 20240078576 · Method and System for Automated Product Video Generation for Fashion Items · published 2023.</p>
+        </div>
+
+        <div class="resume-page__section">
+          <h2>Open Source</h2>
+          <div class="resume-page__oss">
+            <div><strong>vizlang-studio</strong> <span>Visual debugger for LangGraph agents · VS Code</span></div>
+            <div><strong>oriosearch</strong> <span>Self-hosted, Tavily-compatible web search API</span></div>
+            <div><strong>olla-chat</strong> <span>VS Code chat for Ollama</span></div>
+            <div><strong>pydebug-visualizer</strong> <span>Visualise Python structures while debugging</span></div>
+            <div><strong>stateviz</strong> <span>VS Code state-tree visualiser</span></div>
+            <div><strong>a2ui-vue</strong> <span>Vue 3 renderer for Google's A2UI protocol</span></div>
+            <div><strong>sable</strong> <span>Eight-component UI library</span></div>
+          </div>
+        </div>
+
+        <div class="resume-page__actions">
+          <a class="btn btn--primary" href="/Vignesh_K_R.pdf" download>Download PDF</a>
+          <button class="btn btn--ghost" onclick="window.print()">Print</button>
+          <a class="btn btn--ghost" href="/about">About →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .resume-page {
+      padding: var(--s-10) 0 var(--s-10);
+    }
+    .resume-page__grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: var(--s-10);
+      align-items: start;
+    }
+
+    .resume-page__sidebar {
+      position: sticky;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-6);
+    }
+    .sidebar__photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--hairline);
+    }
+    .sidebar__photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sidebar__name {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .sidebar__title {
+      font-size: var(--t-small);
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .sidebar__section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+      padding-top: var(--s-5);
+      border-top: 1px solid var(--hairline);
+    }
+    .sidebar__section h4 {
+      font-size: var(--t-tiny);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .sidebar__contact {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: var(--t-small);
+      color: var(--ink-soft);
+    }
+    .sidebar__contact a {
+      color: var(--accent);
+      transition: color var(--ease);
+    }
+    .sidebar__contact a:hover {
+      color: var(--accent-hover);
+    }
+
+    .sidebar__skills {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: var(--s-2);
+      font-size: var(--t-small);
+      color: var(--ink-soft);
+    }
+    .skill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .sidebar__skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: var(--s-2);
+    }
+    .pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      background: var(--bg-soft);
+      border: 1px solid var(--hairline);
+      padding: 3px 8px;
+      border-radius: 100px;
+    }
+
+    .sidebar__edu {
+      font-size: var(--t-small);
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .sidebar__edu .yr {
+      display: block;
+      font-size: var(--t-tiny);
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .sidebar__certs {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .sidebar__certs p {
+      font-size: var(--t-small);
+      line-height: 1.5;
+      color: var(--ink-soft);
+    }
+    .sidebar__certs .yr {
+      display: block;
+      font-size: var(--t-tiny);
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .resume-page__main {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .resume-page__section {
+      margin-bottom: var(--s-7);
+    }
+    .resume-page__section h2 {
+      font-family: var(--font-display);
+      font-size: var(--t-h3);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: var(--s-4);
+      padding-bottom: var(--s-3);
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+    .resume-page__section p {
+      font-size: var(--t-small);
+      line-height: 1.65;
+      color: var(--ink-soft);
+    }
+    .resume-page__section ul {
+      list-style: disc;
+      padding-left: var(--s-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .resume-page__section li {
+      font-size: var(--t-small);
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+    .resume-page__section strong {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .resume-page__role {
+      margin-bottom: var(--s-5);
+    }
+    .resume-page__role-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--s-2) var(--s-3);
+      margin-bottom: var(--s-3);
+    }
+    .resume-page__role-head strong {
+      font-weight: 600;
+      color: var(--ink);
+      font-size: var(--t-body);
+    }
+    .resume-page__role-head .yrs {
+      font-size: var(--t-tiny);
+      color: var(--muted);
+      font-weight: 500;
+      margin-left: auto;
+    }
+
+    .resume-page__oss {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .resume-page__oss div {
+      display: flex;
+      gap: var(--s-3);
+      font-size: var(--t-small);
+    }
+    .resume-page__oss strong {
+      font-weight: 600;
+      color: var(--ink);
+      min-width: 140px;
+      flex-shrink: 0;
+    }
+    .resume-page__oss span {
+      color: var(--ink-soft);
+    }
+
+    .resume-page__actions {
+      display: flex;
+      gap: var(--s-4);
+      margin-top: var(--s-6);
+      padding-top: var(--s-6);
+      border-top: 1px solid var(--hairline);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--t-small);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: transform var(--ease), background var(--ease), color var(--ease), box-shadow var(--ease);
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn--primary {
+      background: var(--accent);
+      color: #FFFFFF;
+      border: none;
+    }
+    .btn--primary:hover {
+      background: var(--accent-hover);
+    }
+    .btn--ghost {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--hairline);
+    }
+    .btn--ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    @media print {
+      .resume-page { padding: 0; }
+      .resume-page__grid { grid-template-columns: 220px 1fr; gap: var(--s-8); }
+      .resume-page__sidebar { position: static; }
+      .sidebar__photo { width: 120px; height: 120px; }
+      .resume-page__actions { display: none; }
+    }
+
+    @media (max-width: 860px) {
+      .resume-page__grid {
+        grid-template-columns: 1fr;
+        gap: var(--s-8);
+      }
+      .resume-page__sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--s-5) var(--s-8);
+        align-items: start;
+      }
+      .sidebar__photo {
+        width: 100px;
+        height: 100px;
+        grid-row: span 2;
+      }
+      .sidebar__section {
+        padding-top: var(--s-3);
+      }
+      .sidebar__section:first-of-type {
+        border-top: none;
+        padding-top: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .resume-page__sidebar {
+        grid-template-columns: 1fr;
+      }
+      .sidebar__photo {
+        width: 80px;
+        height: 80px;
+        grid-row: auto;
+      }
+      .resume-page__role-head .yrs {
+        margin-left: 0;
+      }
+      .resume-page__oss div {
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+  </style>
+</BaseLayout>
