@@ -2,9 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const work = [
-  { name: 'Artifax', type: 'AI-native design platform', description: 'An infinite, GPU-accelerated design canvas orchestrated by planner–executor–validator agents, built for enterprise creative workflows.', outcome: 'Used by Puma, Ajio & ABFRL', stack: ['LangGraph', 'WebGL / WASM', 'Multi-agent AI'], image: '/assets/projects/artifax.png', href: 'https://streamoid.com/artifax', tone: 'violet' },
-  { name: 'Desara', type: 'Real-time 3D platform', description: 'A cloud-streamed Unreal Engine studio that brings photoreal 3D product design to the browser, without workstation-class hardware.', outcome: 'Adopted by London College of Fashion', stack: ['Unreal Engine', 'WebRTC', 'GPU orchestration'], image: '/assets/projects/desara.png', href: 'https://desara.streamoid.com/', tone: 'cyan' },
-  { name: 'Catalogix', type: 'Enterprise ML systems', description: 'Automated cataloging and AI photoshoot infrastructure built around distributed classifiers, diffusion models, and custom LoRA adapters.', outcome: '70% faster catalog turnaround', stack: ['Computer vision', 'Diffusion', 'Distributed systems'], image: '/assets/projects/catalogix.png', href: 'https://streamoid.com/catalogix', tone: 'amber' },
+  { name: 'Artifax', type: 'AI-native design platform', description: 'An infinite, GPU-accelerated design canvas orchestrated by planner–executor–validator agents, built for enterprise creative workflows.', outcome: 'Used by Puma, Ajio & ABFRL', stack: ['LangGraph', 'WebGL / WASM', 'Multi-agent AI'], image: '/assets/projects/artifax.png', preview: '', videos: [], href: 'https://streamoid.com/artifax', tone: 'violet' },
+  { name: 'Desara', type: 'Real-time 3D platform', description: 'A cloud-streamed Unreal Engine studio that brings photoreal 3D product design to the browser, without workstation-class hardware.', outcome: 'Adopted by London College of Fashion', stack: ['Unreal Engine', 'WebRTC', 'GPU orchestration'], image: '/assets/projects/desara.png', preview: '', videos: [{ label: 'Watch demo', youtube: 'BPQrC33DVqI' }, { label: 'Walkthrough', youtube: '83zjPoeUGp8' }, { label: 'Fashinnovation 2024 talk', youtube: '0gos0ZI2WC4', start: 1292 }], href: 'https://desara.streamoid.com/', tone: 'cyan' },
+  { name: 'Catalogix', type: 'Enterprise ML systems', description: 'Automated cataloging and AI photoshoot infrastructure built around distributed classifiers, diffusion models, and custom LoRA adapters.', outcome: '70% faster catalog turnaround', stack: ['Computer vision', 'Diffusion', 'Distributed systems'], image: '/assets/projects/catalogix.png', preview: '', videos: [{ label: 'Watch demo', youtube: 'wNB_f5gyVZc' }], href: 'https://streamoid.com/catalogix', tone: 'amber' },
 ];
 
 const projects = [
@@ -35,7 +35,7 @@ const certifications = [
 ];
 ---
 
-<BaseLayout title="Vignesh K. · Solutions Architect & Product Engineer" description="Solutions architect building ambitious AI, real-time 3D, and developer platforms from first principles to production." bodyClass="home" styles={['home.css']}>
+<BaseLayout title="Vignesh K. · Solutions Architect & Product Engineer" description="Solutions architect building ambitious AI, real-time 3D, and developer platforms from first principles to production." bodyClass="home" styles={['home.css']} scripts={['case-video.js']}>
   <section class="hero shell">
     <div class="hero__copy">
       <div class="availability animate-fade-in-up"><span class="availability__dot"></span>Bengaluru, India · Building at Streamoid</div>
@@ -59,21 +59,40 @@ const certifications = [
     <div class="proof__item"><strong>3+</strong><span>enterprise brands<br />in production</span></div>
   </div></section>
 
+  <section class="patent-section shell" data-reveal>
+    <p class="eyebrow">Intellectual property</p>
+    <a class="patent-card" href="https://patents.google.com/patent/US20240078576A1/en" target="_blank" rel="noopener"><span class="patent-card__icon">✦</span><div><p>Published US patent</p><h3>Automated Product Video Generation for Fashion Items</h3><span>US 2024/0078576 A1 ↗</span></div><strong>View on<br />Google Patents ↗</strong></a>
+  </section>
+
   <section class="selected shell" id="selected-work">
     <div class="section-intro" data-reveal><div><p class="eyebrow">Selected work</p><h2>Systems with consequence.</h2></div><p>Flagship platforms where architecture, product thinking, and execution had to work as one.</p></div>
     <div class="case-list">
       {work.map((project, index) => (
-        <a class={`case case--${project.tone}`} href={project.href} target="_blank" rel="noopener" data-reveal>
+        <article class={`case case--${project.tone}`} data-reveal>
+          <a class="case__cover" href={project.href} target="_blank" rel="noopener" aria-label={`View ${project.name} platform`}></a>
           <div class="case__content">
             <div class="case__number">0{index + 1} / 03</div><p class="case__type">{project.type}</p><h3>{project.name}</h3>
             <p class="case__description">{project.description}</p><p class="case__outcome"><span>↳</span>{project.outcome}</p>
             <ul class="case__stack" aria-label="Technologies">{project.stack.map((item) => <li>{item}</li>)}</ul>
-            <span class="case__link">View platform <span>↗</span></span>
+            <div class="case__actions">
+              {project.videos.map((video, i) => (
+                <button class={`case__demo${i ? ' case__demo--ghost' : ''}`} type="button" data-demo-youtube={video.youtube} data-demo-start={video.start} data-demo-src={video.src} data-demo-title={`${project.name} · ${video.label}`}><span aria-hidden="true">▶</span> {video.label}</button>
+              ))}
+              <span class="case__link">View platform <span>↗</span></span>
+            </div>
           </div>
-          <div class="case__visual"><img src={project.image} alt={`${project.name} product interface`} loading="lazy" /></div>
-        </a>
+          <div class="case__visual">
+            {project.preview
+              ? <video class="case__video" muted loop playsinline preload="none" poster={project.image} aria-label={`${project.name} product preview`}><source src={project.preview} type="video/mp4" /></video>
+              : <img src={project.image} alt={`${project.name} product interface`} loading="lazy" />}
+          </div>
+        </article>
       ))}
     </div>
+    <dialog class="demo" id="demo-dialog" aria-label="Product demo">
+      <div class="demo__bar"><p class="demo__title"></p><button class="demo__close" type="button" aria-label="Close demo">✕</button></div>
+      <div class="demo__frame"></div>
+    </dialog>
   </section>
 
   <section class="spotlight" aria-label="Currently building VMotionX">
@@ -93,9 +112,44 @@ const certifications = [
     </div>
   </section>
 
-  <section class="patent-section shell" data-reveal>
-    <p class="eyebrow">Intellectual property</p>
-    <a class="patent-card" href="https://patents.google.com/patent/US20240078576A1/en" target="_blank" rel="noopener"><span class="patent-card__icon">✦</span><div><p>Published US patent</p><h3>Automated Product Video Generation for Fashion Items</h3><span>US 2024/0078576 A1 ↗</span></div><strong>View on<br />Google Patents ↗</strong></a>
+  <section class="lora shell" data-reveal aria-labelledby="lora-heading">
+    <div class="section-intro">
+      <div><p class="eyebrow">Applied research · Fine-tuning</p><h2 id="lora-heading">Fifty-one photos,<br />one small adapter.</h2></div>
+      <p>Adapting a 12B-parameter image model to a subject it has never seen, on hardware that fits under a desk.</p>
+    </div>
+
+    <div class="lora__flow">
+      <figure class="lora__inputs">
+        <div class="lora__grid">
+          {Array.from({ length: 12 }, (_, i) => (
+            <img src={`/assets/lora/train/${String(i + 1).padStart(2, '0')}.jpg`} alt="" loading="lazy" width="300" height="300" />
+          ))}
+        </div>
+        <figcaption>The dataset · 51 phone photos, shot at home. Front, three-quarter, both profiles, the back of a head. No studio, no lighting rig. Shown here downscaled.</figcaption>
+      </figure>
+
+      <div class="lora__arrow" aria-hidden="true"><span>Flux LoRA training</span>→</div>
+
+      <figure class="lora__outputs">
+        <div class="lora__outs">
+          <img class="lora__out lora__out--tall" src="/assets/lora/out-helicopter.jpg" alt="Generated image: black suit beside a helicopter" loading="lazy" />
+          <img class="lora__out" src="/assets/lora/out-paris-portrait.jpg" alt="Generated portrait in front of the Eiffel Tower" loading="lazy" />
+          <img class="lora__out" src="/assets/lora/out-paris-profile.jpg" alt="Generated side profile in front of the Eiffel Tower" loading="lazy" />
+        </div>
+        <figcaption>Generated from prompts. None of these places, clothes or framings exist anywhere in the dataset.</figcaption>
+      </figure>
+    </div>
+
+    <div class="lora__notes">
+      <div class="lora__note">
+        <h3>LoRA</h3>
+        <p>Full fine-tuning rewrites every weight in the model, which is why it costs what it costs. LoRA freezes the base model and trains a pair of small low-rank matrices alongside the attention layers instead. What ships at the end is an adapter measured in megabytes. The base weights stay untouched, so one model serves every subject you train.</p>
+      </div>
+      <div class="lora__note">
+        <h3>QLoRA</h3>
+        <p>QLoRA shrinks the frozen base further by quantizing it to 4-bit, then trains the adapter on top of it in higher precision. The memory saved is the whole point. It moves a run that would have demanded datacenter cards onto a single consumer GPU, which is what makes an experiment like this something you can start on a weekday evening.</p>
+      </div>
+    </div>
   </section>
 
   <section class="recognition shell" data-reveal>

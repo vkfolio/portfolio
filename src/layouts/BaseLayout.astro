@@ -7,6 +7,7 @@ export interface Props {
   styles?: string[];     // additional stylesheet hrefs (CSS files in /public/assets/styles/)
   scripts?: string[];    // additional script srcs (JS files in /public/assets/scripts/)
   showCanonical?: boolean;
+  noindex?: boolean;     // unlisted pages: keep them out of search results
 }
 const {
   title,
@@ -15,6 +16,7 @@ const {
   styles = [],
   scripts = [],
   showCanonical = true,
+  noindex = false,
 } = Astro.props;
 
 const pathname = Astro.url.pathname.replace(/\/index\.html$/, '/').replace(/\/$/, '') || '/';
@@ -41,6 +43,7 @@ const favicon = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="icon" href={favicon} />
   {showCanonical && <link rel="canonical" href={new URL(pathname, Astro.site).toString()} />}
   <meta property="og:title" content={title} />
