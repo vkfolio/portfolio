@@ -1,0 +1,15 @@
+{
+  "slug": "vikix",
+  "title": "vikix",
+  "desc": "A self-hosted code knowledge engine: wiki, live dependency graph, mined decisions, and a cold-start briefing for agents.",
+  "group": "personal",
+  "groupLabel": "Personal R&D · developer tools",
+  "accent": "#1F9D63",
+  "accentSoft": "#DFF3E8",
+  "accentInk": "#0D3B26",
+  "year": "2026",
+  "role": "Solo: engine, dashboard, CLI, MCP server",
+  "links": [
+    { "label": "Overview", "href": "/projects/vikix" }
+  ]
+}

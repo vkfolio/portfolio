@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const accent = '#1F9D63';
+const accentSoft = '#DFF3E8';
+const accentInk = '#0D3B26';
+
+const specs = ['Self-hosted', 'One public port', 'Zero API keys', '~30 languages', '22 MCP tools', 'Docker'];
+
+// Captures of the running dashboard, at 1440x900.
+const shots = [
+  {
+    src: '/assets/vikix/graph.jpg',
+    title: 'The dependency graph',
+    body: 'Every symbol and every call, coloured by Louvain community. This project is 2,077 nodes and 7,011 edges, laid out from the real graph rather than drawn by hand.',
+  },
+  {
+    src: '/assets/vikix/start.jpg',
+    title: 'The cold-start briefing',
+    body: 'One grounded page assembled from the graph: the largest modules, the entry points and their call paths, the risk read, the house style, and why the code is the way it is. Regenerated on every sync.',
+  },
+  {
+    src: '/assets/vikix/wiki.jpg',
+    title: 'The wiki',
+    body: 'Skeleton pages for every module and symbol, each with an architecture diagram compiled from the graph. An agent fills in the prose; the structure and the numbers come from the engine.',
+  },
+  {
+    src: '/assets/vikix/insights.jpg',
+    title: 'Health, dead code and flows',
+    body: 'A 16-biomarker score per file with repo-level totals, plus dead code and execution flows. Deterministic, with no model in the loop, and the same data agents receive over MCP.',
+  },
+];
+
+const pillars = [
+  {
+    title: 'Deterministic first',
+    body: 'tree-sitter AST extraction across about thirty languages, a real dependency graph, Louvain communities, MinHash dedup, architecture diagrams compiled from the graph, and skeleton wiki pages. All of it runs with no LLM at all, so the structure of the wiki is never something a model imagined.',
+  },
+  {
+    title: 'The why, not just the what',
+    body: 'Architectural decisions are mined verbatim from ADRs, decision-bearing commits, changelogs and inline WHY and DECISION markers, then ranked by provenance and surfaced inline in the wiki. The reasoning behind a piece of code is usually the part that never makes it into documentation.',
+  },
+  {
+    title: 'Built for agents, usable by people',
+    body: 'The engine exposes 22 MCP tools, so Claude Code or Codex can ask for a briefing, walk a call chain, or polish a page. The dashboard is the human view of exactly the same data, and an optional local model can answer questions itself for headless setups.',
+  },
+  {
+    title: 'Truly incremental',
+    body: 'Content-hash diffing re-extracts only changed files and marks only the affected pages stale, and every MCP response is token-budgeted. A sync after a day of work costs a fraction of the first ingest.',
+  },
+];
+---
+
+<BaseLayout
+  title="vikix · Vignesh K"
+  description="A self-hosted code knowledge engine: it turns a codebase into a wiki with a live dependency graph, the decisions behind the code, a deterministic health read, and a briefing that lets a fresh agent session start safely."
+>
+  <article class="vk shell" style={`--vk-accent:${accent};--vk-soft:${accentSoft};--vk-ink:${accentInk};`}>
+    <a class="vk-back" href="/projects/">← Projects</a>
+
+    <header class="vk-hero animate-fade-in-up">
+      <div class="vk-hero__meta">
+        <span class="vk-badge">Personal R&amp;D</span>
+        <span class="vk-dot">·</span>
+        <span>2026</span>
+        <span class="vk-dot">·</span>
+        <span>Developer tools</span>
+      </div>
+      <h1>vikix</h1>
+      <p class="vk-tagline">
+        A self-hosted code knowledge engine. Point it at a repository and it builds
+        <span class="vk-em">a wiki with a live dependency graph</span>, mines the decisions behind the code,
+        scores its health, and hands a fresh agent session one briefing it can start working from.
+      </p>
+      <ul class="vk-specs" aria-label="At a glance">{specs.map((s) => <li>{s}</li>)}</ul>
+    </header>
+
+    <section class="vk-intro animate-fade-in-up delay-1">
+      <p>
+        Every coding agent starts cold. It opens files at random, rebuilds a mental model that was already
+        built yesterday, and has no way to know why a thing was done the way it was. vikix is the attempt to
+        fix that with a real artefact rather than a longer prompt: <strong>a durable, queryable model of the
+        codebase</strong> that both a person and an agent read from.
+      </p>
+      <p class="vk-muted">
+        <code>docker compose up -d</code> gives you the dashboard, the REST API and an MCP server on a single
+        port, with no API keys and no external calls. The heavy optional pieces, a Memgraph backbone and a
+        local model, run as internal services behind that same port when you want them.
+      </p>
+    </section>
+
+    {shots.map((shot, i) => (
+      <section class="vk-shot animate-fade-in-up delay-1">
+        <figure>
+          <img src={shot.src} alt={shot.title} loading={i ? 'lazy' : 'eager'} width="1440" height="900" />
+        </figure>
+        <div class="vk-shot__body">
+          <p class="vk-shot__n">{String(i + 1).padStart(2, '0')}</p>
+          <h2>{shot.title}</h2>
+          <p>{shot.body}</p>
+        </div>
+      </section>
+    ))}
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>What makes it different</h2></div>
+      <div class="vk-pillars">
+        {pillars.map((pillar) => (
+          <div class="vk-pillar"><h3>{pillar.title}</h3><p>{pillar.body}</p></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>How a sync runs</h2><span class="vk-tag">Three stages, one of them optional</span></div>
+      <div class="vk-flow">
+        <div class="vk-step">
+          <p class="vk-step__n">CLI · on your machine</p>
+          <p>Detect files, hash them, plan the diff, then run tree-sitter over only what changed. Extractions, blobs, git commits and any coverage report are pushed to the engine.</p>
+        </div>
+        <div class="vk-step">
+          <p class="vk-step__n">Engine · free of models</p>
+          <p>Build the graph, resolve symbols, find communities, lay it out, compile diagrams, mine decisions, derive conventions and the briefing, score health, find dead code and flows, and index it all for search.</p>
+        </div>
+        <div class="vk-step">
+          <p class="vk-step__n">Agent · optional</p>
+          <p>A coding agent picks up the skeleton pages through the skill and writes grounded prose, page bundle by page bundle. Nothing about the structure depends on it running.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>VDOC, the architecture book</h2></div>
+      <div class="vk-vdoc">
+        <figure><img src="/assets/vikix/vdoc.jpg" alt="The VDOC tab" loading="lazy" width="1440" height="900" /></figure>
+        <div>
+          <p>
+            The wiki mirrors the code, one page per module and symbol. VDOC is the other half: a curated
+            hierarchy of conceptual sections and modules, each with its own sub-architecture diagram grounded
+            in the real graph, and deep prose that cites the source it came from.
+          </p>
+          <p class="vk-muted">
+            One command creates it, and every run after that updates only what changed since the last sync.
+            The engine grounds the diagrams and the citations; the agent writes the narrative.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="vk-foot animate-fade-in-up delay-1">
+      <p>Running locally at the moment, with the dashboard, API and MCP server on one port. Screenshots on this page are of a live instance indexing one of my own projects.</p>
+      <a class="vk-mail" href="mailto:vignesh0702@gmail.com">Ask me about it → vignesh0702@gmail.com</a>
+    </footer>
+  </article>
+
+  <style>
+    .vk { padding: var(--s-8) 0 var(--s-12); max-width: 1000px; }
+    .vk-back { display: inline-block; margin-bottom: var(--s-8); font-size: var(--t-small); font-weight: 600; color: var(--muted); transition: color var(--ease); }
+    .vk-back:hover { color: var(--vk-accent); }
+
+    .vk-hero { padding-bottom: var(--s-8); border-bottom: 1px solid var(--hairline); margin-bottom: var(--s-8); }
+    .vk-hero__meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); font-size: var(--t-tiny); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .vk-dot { color: var(--hairline); }
+    .vk-badge { padding: 3px 10px; border-radius: 999px; background: var(--vk-soft); color: var(--vk-ink); letter-spacing: .04em; }
+    .vk-hero h1 { margin-bottom: var(--s-4); font-family: var(--mono); font-size: clamp(48px, 7vw, 88px); font-weight: 700; line-height: 1; letter-spacing: -.04em; }
+    .vk-tagline { max-width: 700px; font-size: clamp(18px, 2.4vw, 24px); line-height: 1.5; color: var(--ink-soft); }
+    .vk-em { color: var(--vk-accent); font-weight: 600; }
+    .vk-specs { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); margin-top: var(--s-6); padding: 0; list-style: none; }
+    .vk-specs li { padding: 5px 10px; border: 1px solid var(--hairline); border-radius: 3px; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+
+    .vk-intro { max-width: 720px; margin-bottom: var(--s-9); }
+    .vk-intro p { font-size: 17px; line-height: 1.75; color: var(--ink-soft); }
+    .vk-intro p + p { margin-top: var(--s-4); }
+    .vk-intro strong { color: var(--ink); }
+    .vk-intro code { padding: 2px 6px; border-radius: 3px; background: var(--bg-soft); font-family: var(--mono); font-size: 13px; }
+    .vk-muted { color: var(--muted); font-size: 15px; }
+
+    .vk-shot { display: grid; grid-template-columns: 1.35fr 1fr; gap: var(--s-6); align-items: center; margin-bottom: var(--s-8); }
+    .vk-shot:nth-child(even) > figure { order: 2; }
+    .vk-shot figure { margin: 0; overflow: hidden; border: 1px solid var(--hairline); border-radius: 4px; background: #0d1117; }
+    .vk-shot img { display: block; width: 100%; height: auto; }
+    .vk-shot__n { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--vk-accent); }
+    .vk-shot__body h2 { margin: var(--s-2) 0 var(--s-3); font-family: var(--font-display); font-size: 27px; font-weight: 400; line-height: 1.2; }
+    .vk-shot__body p { color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+
+    .vk-block { margin: var(--s-9) 0; }
+    .vk-block__head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-6); padding-bottom: var(--s-3); border-bottom: 1px solid var(--hairline); }
+    .vk-block__head h2 { font-family: var(--font-display); font-size: var(--t-h2); font-weight: 400; letter-spacing: -.02em; }
+    .vk-tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+    .vk-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-6) var(--s-7); }
+    .vk-pillar h3 { font-size: 17px; font-weight: 650; }
+    .vk-pillar p { margin-top: var(--s-3); color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+
+    .vk-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+    .vk-step { padding: var(--s-5); border-left: 2px solid var(--vk-accent); background: var(--bg-soft); }
+    .vk-step__n { margin-bottom: var(--s-3); font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--vk-accent); }
+    .vk-step p { color: var(--ink-soft); font-size: var(--t-small); line-height: 1.65; }
+
+    .vk-vdoc { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--s-6); align-items: center; }
+    .vk-vdoc figure { margin: 0; overflow: hidden; border: 1px solid var(--hairline); border-radius: 4px; }
+    .vk-vdoc img { display: block; width: 100%; height: auto; }
+    .vk-vdoc p { color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+    .vk-vdoc p + p { margin-top: var(--s-4); }
+
+    .vk-foot { padding-top: var(--s-6); border-top: 1px solid var(--hairline); }
+    .vk-foot p { max-width: 700px; color: var(--ink-soft); font-size: var(--t-small); line-height: 1.7; }
+    .vk-mail { display: inline-block; margin-top: var(--s-4); font-size: var(--t-small); font-weight: 650; color: var(--vk-accent); }
+
+    @media (max-width: 900px) {
+      .vk-shot, .vk-vdoc { grid-template-columns: 1fr; }
+      .vk-shot:nth-child(even) > figure { order: 0; }
+      .vk-pillars, .vk-flow { grid-template-columns: 1fr; }
+    }
+  </style>
+</BaseLayout>
