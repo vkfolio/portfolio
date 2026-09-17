@@ -1,0 +1,15 @@
+{
+  "slug": "wrapx",
+  "title": "WrapX",
+  "desc": "Live, interactive retopology: wrap a clean base mesh onto a scan and watch it flow, then grab it and push it around while the solver is still running.",
+  "group": "personal",
+  "groupLabel": "Personal R&D · realtime 3D",
+  "accent": "#A83E9C",
+  "accentSoft": "#F7E7F4",
+  "accentInk": "#45143E",
+  "year": "2026",
+  "role": "Solo: solver, renderer, UI",
+  "links": [
+    { "label": "Overview", "href": "/projects/wrapx" }
+  ]
+}

@@ -1,0 +1,332 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const accent = '#A83E9C';
+const accentSoft = '#F7E7F4';
+const accentInk = '#45143E';
+
+const specs = ['C++ · no Python in the loop', 'In-process solver thread', 'Quads preserved', 'OBJ + FBX', 'Reversed-Z GL + Skia', 'GPL-3.0'];
+
+// Frames from one continuous solve: a 13,650-vertex template onto an
+// 8,435-vertex scan, captured DPI-aware at 2560x1517.
+const shots = [
+  {
+    src: '/assets/wrapx/settle.jpg',
+    title: 'Step 116 — settle',
+    body: 'Two seconds in. The template is still wearing the scan like a loose coat, and the magenta underneath is the part it has not reached yet. Surface error 1.075% of model size, 20% of snap attempts rejected. Nothing has been written to disk and nothing was exported to get here.',
+  },
+  {
+    src: '/assets/wrapx/coarse.jpg',
+    title: 'Step 341 — coarse',
+    body: 'The anneal schedule has moved on and the magenta has mostly closed up, surviving at the hands and feet where thin features sit close together. 0.462%, 14% rejected. You can pause here, or grab it and pull, and it keeps solving under your cursor.',
+  },
+  {
+    src: '/assets/wrapx/detail.jpg',
+    title: 'Step 1500 — holding at detail',
+    body: 'The end of the schedule, about ten watchable seconds later: 0.138% surface error, 7% rejected, quads intact. It holds at detail rather than stopping, so a late grab still settles instead of freezing mid-edit.',
+  },
+];
+
+const pillars = [
+  {
+    title: 'The solve is the interface',
+    body: 'An earlier version of this wrote both meshes and the point list to disk and spawned a Python pipeline as a subprocess. It produced good numbers and the wrong product: you pressed a button, waited, and looked at an answer. Now the solver runs in this process on its own thread, at a pace you can watch, and you can interrupt it whenever you like.',
+  },
+  {
+    title: 'Grab it while it runs',
+    body: 'A grab has to suppress snapping or it does nothing — at the final stage the data term pulls with about 0.857 per step, so a grabbed vertex is yanked back onto the scan before you see it move. The grab writes its falloff into the snap rejection mask and fades out over ~15 steps, and the anneal clock freezes for the duration so the mesh does not stiffen the longer you hold it.',
+  },
+  {
+    title: 'Fluid because of the integrator',
+    body: 'Grabs move positions without touching the Verlet history, so they inject velocity rather than teleporting. That is why the mesh keeps flowing for a moment after you let go. The soft feel is a consequence of how the solver integrates, not an effect layered on top of a finished result.',
+  },
+  {
+    title: 'Quads survive the round trip',
+    body: 'The mesh type stores polygons, not triangles, and the wireframe uses a per-triangle edge mask so a quad draws four edges instead of five. Most loaders triangulate on import, which would destroy the one property a retopology tool exists to maintain — which is also why the OBJ parser is hand-written and FBX goes through ufbx rather than Assimp.',
+  },
+];
+
+// A screenshot cannot show the one thing this tool is about.
+const demo = { youtube: 'Qw8l56f1hDc', label: 'Watch it wrap' };
+
+// Both rows measured on a full body, not assumed.
+const snap = [
+  { mode: 'SURFACE (default)', folds: '21', selfx: '200+', acc: '0.19%' },
+  { mode: 'OUTSIDE', folds: '5', selfx: '49', acc: '0.61%' },
+];
+---
+
+<BaseLayout
+  title="WrapX · Vignesh K"
+  description="Live, interactive retopology. Load a clean base mesh and a scan, click matching points, press Play, and watch the template flow onto the scan — then grab it and push it around while it solves."
+  scripts={['case-video.js']}
+>
+  <article class="vk shell" style={`--vk-accent:${accent};--vk-soft:${accentSoft};--vk-ink:${accentInk};`}>
+    <a class="vk-back" href="/projects/">← Projects</a>
+
+    <header class="vk-hero animate-fade-in-up">
+      <div class="vk-hero__meta">
+        <span class="vk-badge">Personal R&amp;D</span>
+        <span class="vk-dot">·</span>
+        <span>2026</span>
+        <span class="vk-dot">·</span>
+        <span>Realtime 3D</span>
+      </div>
+      <h1>WrapX</h1>
+      <p class="vk-tagline">
+        Live, interactive retopology. Load a clean base mesh and a scan, click matching points on each,
+        press Play, and <span class="vk-em">watch the template flow onto the scan</span> — then grab it
+        and push it around while it is still solving.
+      </p>
+      <div class="vk-videobar">
+        <button class="vk-demo" type="button" data-demo-youtube={demo.youtube} data-demo-title="WrapX · Live wrap"><span aria-hidden="true">▶</span> {demo.label}</button>
+        <p class="vk-videobar__note">The stills below are frames from one solve. The video is the part they cannot show.</p>
+      </div>
+      <ul class="vk-specs" aria-label="At a glance">{specs.map((s) => <li>{s}</li>)}</ul>
+    </header>
+
+    <section class="vk-intro animate-fade-in-up delay-1">
+      <p>
+        Wrapping a base mesh onto a scan is normally a batch step. You place landmarks, submit, wait, and
+        inspect what comes back; if it is wrong you adjust the landmarks and submit again. WrapX is the
+        argument that <strong>the interesting part is the ten seconds you are not allowed to see</strong> —
+        so the solve runs in-process, at a watchable pace, in the viewport you are already looking at.
+      </p>
+      <p class="vk-muted">
+        There is no batch step, no export round trip and no Python in the loop. Press <strong>Play</strong>
+        and the template starts crawling onto the target; press <strong>Grab</strong> and drag, and the mesh
+        stays soft under the cursor and keeps solving while you pull. The Python pipeline this was ported
+        from still exists — as the reference implementation the C++ is tested against, not as a runtime
+        dependency.
+      </p>
+    </section>
+
+    {shots.map((shot, i) => (
+      <section class="vk-shot animate-fade-in-up delay-1">
+        <figure>
+          <img src={shot.src} alt={shot.title} loading={i ? 'lazy' : 'eager'} width="1440" height="853" />
+        </figure>
+        <div class="vk-shot__body">
+          <p class="vk-shot__n">{String(i + 1).padStart(2, '0')}</p>
+          <h2>{shot.title}</h2>
+          <p>{shot.body}</p>
+        </div>
+      </section>
+    ))}
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>What makes it different</h2></div>
+      <div class="vk-pillars">
+        {pillars.map((pillar) => (
+          <div class="vk-pillar"><h3>{pillar.title}</h3><p>{pillar.body}</p></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>How a wrap runs</h2><span class="vk-tag">Three stages, none of them a wait</span></div>
+      <div class="vk-flow">
+        <div class="vk-step">
+          <p class="vk-step__n">Point pairs</p>
+          <p>Click a point on the template, then the matching point on the target. Landmarks are stored as a polygon plus barycentric coordinates, so a set is reusable across any model with matching topology and two nearby clicks never collide. Symmetry mirrors each new pair across X.</p>
+        </div>
+        <div class="vk-step">
+          <p class="vk-step__n">Play</p>
+          <p>Structural springs, Verlet integration, Laplacian smoothing and surface snapping, driven by a real annealing schedule on a worker thread. The anneal bar, the step counter and the live surface error are all painted from the running solve.</p>
+        </div>
+        <div class="vk-step">
+          <p class="vk-step__n">Grab</p>
+          <p>Push the wrap around while it settles. Shift-drag pulls along the surface normal, Ctrl+wheel sizes the brush. Grabbing keeps the solver stepping even when paused — otherwise a pull would just translate a frozen shape with no springs to carry it outward.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>Measuring the right thing</h2><span class="vk-tag">Quality vector, not surface RMS</span></div>
+      <div class="vk-measure">
+        <p>
+          Surface RMS alone is minimised by a mesh collapsed onto the target, and it cannot see a single one
+          of the failures that actually cost you work. So the wrap reports a vector: folds,
+          self-intersections, edge distortion and landmark residual alongside surface error.
+        </p>
+        <p class="vk-muted">
+          That is what makes the snapping trade legible. On anything with thin close-together features —
+          fingers, lips, eyelids — default <code>SURFACE</code> snapping takes the nearest point
+          unconditionally, so opposing surfaces a millimetre apart grab each other. Measured on a full body:
+        </p>
+        <table class="vk-table">
+          <thead>
+            <tr><th>Snap mode</th><th>Folds</th><th>Self-intersecting pairs</th><th>Surface error</th></tr>
+          </thead>
+          <tbody>
+            {snap.map((row) => (
+              <tr>
+                <td><code>{row.mode}</code></td>
+                <td>{row.folds}</td>
+                <td>{row.selfx}</td>
+                <td>{row.acc}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="vk-muted">
+          Three times the surface error, for a quarter of the folds. Topological damage is the more expensive
+          kind, because it breaks UVs and everything downstream of them.
+        </p>
+      </div>
+    </section>
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>Two tools, one shell</h2></div>
+      <div class="vk-vdoc">
+        <figure><img src="/assets/wrapx/home.jpg" alt="The WrapX Studio launcher" loading="lazy" width="1440" height="900" /></figure>
+        <div>
+          <p>
+            WrapX is the wrap tool. <strong>FlowX</strong>, alongside it and still in development, comes at
+            the same problem from the other end: remesh a sculpt or scan into clean quads from a cross field,
+            and comb that field with strokes to steer the edge flow where you want it.
+          </p>
+          <p class="vk-muted">
+            Both sit on a shared shell, and the geometry, the maths and the whole solver live in libraries
+            that link neither GL nor the UI toolkit — which is what keeps 26,194 test assertions running
+            without a window.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>Things that were not obvious</h2></div>
+      <div class="vk-pillars">
+        <div class="vk-pillar">
+          <h3>Picking on a mesh that is moving</h3>
+          <p>Ray queries against a deforming mesh refit the BVH rather than rebuilding it — one backward sweep over the existing tree. The split planes go stale as the mesh moves so the tree slowly loses efficiency, but it stays correct, because a query only descends into boxes that still contain their triangles.</p>
+        </div>
+        <div class="vk-pillar">
+          <h3>One GL block per frame, both viewports</h3>
+          <p>Skia's Ganesh backend records draws and replays them at the final submit, while raw GL executes immediately. Rendering each viewport inside its own paint would cost a flush and a full state reset per viewport, and would let a shared texture display the other viewport's contents.</p>
+        </div>
+        <div class="vk-pillar">
+          <h3>The test that keeps earning its place</h3>
+          <p>A projection round trip: project a vertex to screen coordinates, cast a ray back through that pixel, assert it lands on the same point — under both depth conventions, on an offset non-square viewport. Skia draws y-down in logical pixels; GL renders y-up in device pixels. It has caught the ray being built backwards, and an unprojection outside the reversed-Z frustum.</p>
+        </div>
+        <div class="vk-pillar">
+          <h3>Release, or it stutters</h3>
+          <p>The solver runs about 3.5x faster in Release — 1.2 ms per step against 4.2 ms at 4,776 vertices. That is the entire difference between a live wrap that holds 60 fps while you drag it and one that visibly stutters, so Release is the default in the build script rather than a flag you remember.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="vk-foot animate-fade-in-up delay-1">
+      <p>
+        <strong>Alpha, and honest about it.</strong> It wraps, live, and every number on this page is
+        measured rather than estimated. But the solver is at an early phase of a planned five: the shear,
+        bending and curvature-preserving terms are not in yet, so expect a slightly soft fit and some quad
+        drift. A T-pose template onto an A-pose target still fails badly — a single global thin-plate spline
+        cannot express a large limb rotation. One file is a port of GPL-3.0 code, which makes the binary
+        GPL-3.0; it is deliberately the only one.
+      </p>
+      <a class="vk-mail" href="mailto:vignesh0702@gmail.com">Ask me about it → vignesh0702@gmail.com</a>
+    </footer>
+
+    <dialog class="demo" id="demo-dialog" aria-label="WrapX demo">
+      <div class="demo__bar"><p class="demo__title"></p><button class="demo__close" type="button" aria-label="Close video">✕</button></div>
+      <div class="demo__frame"></div>
+    </dialog>
+  </article>
+
+  <style>
+    .vk { padding: var(--s-8) 0 var(--s-12); max-width: 1000px; }
+    .vk-back { display: inline-block; margin-bottom: var(--s-8); font-size: var(--t-small); font-weight: 600; color: var(--muted); transition: color var(--ease); }
+    .vk-back:hover { color: var(--vk-accent); }
+
+    .vk-hero { padding-bottom: var(--s-8); border-bottom: 1px solid var(--hairline); margin-bottom: var(--s-8); }
+    .vk-hero__meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); font-size: var(--t-tiny); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .vk-dot { color: var(--hairline); }
+    .vk-badge { padding: 3px 10px; border-radius: 999px; background: var(--vk-soft); color: var(--vk-ink); letter-spacing: .04em; }
+    .vk-hero h1 { margin-bottom: var(--s-4); font-family: var(--mono); font-size: clamp(48px, 7vw, 88px); font-weight: 700; line-height: 1; letter-spacing: -.04em; }
+    .vk-tagline { max-width: 700px; font-size: clamp(18px, 2.4vw, 24px); line-height: 1.5; color: var(--ink-soft); }
+    .vk-em { color: var(--vk-accent); font-weight: 600; }
+    .vk-specs { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); margin-top: var(--s-6); padding: 0; list-style: none; }
+    .vk-specs li { padding: 5px 10px; border: 1px solid var(--hairline); border-radius: 3px; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+
+    .vk-videobar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3) var(--s-4); margin-top: var(--s-6); }
+    .vk-demo {
+      display: inline-flex; align-items: center; gap: 9px; min-height: 38px; padding: 0 15px;
+      border: 0; border-radius: 4px; background: var(--vk-accent); color: #fff;
+      font: inherit; font-size: 13px; font-weight: 650; cursor: pointer; transition: transform var(--ease);
+    }
+    .vk-demo span { font-size: 10px; }
+    .vk-demo:hover { transform: translateY(-2px); }
+    .vk-videobar__note { max-width: 340px; color: var(--muted); font-size: var(--t-tiny); line-height: 1.6; }
+
+    .demo { width: min(1100px, calc(100vw - 32px)); max-width: none; margin: auto; padding: 0; border: 0; border-radius: 8px; overflow: hidden; background: #0c0b14; color: #fff; }
+    .demo::backdrop { background: rgba(8,7,16,.78); }
+    .demo__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 10px 10px 18px; }
+    .demo__title { font-size: 13px; font-weight: 650; }
+    .demo__close { width: 36px; height: 36px; border: 0; border-radius: 4px; background: transparent; color: #fff; font-size: 16px; cursor: pointer; }
+    .demo__close:hover { background: rgba(255,255,255,.12); }
+    .demo__frame { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
+    /* the player is created by script after render, so it never gets Astro's scope attribute */
+    .demo__frame :global(iframe), .demo__frame :global(video) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    .vk-intro { max-width: 720px; margin-bottom: var(--s-9); }
+    .vk-intro p { font-size: 17px; line-height: 1.75; color: var(--ink-soft); }
+    .vk-intro p + p { margin-top: var(--s-4); }
+    .vk-intro strong { color: var(--ink); }
+    .vk-muted { color: var(--muted); font-size: 15px; }
+
+    .vk-shot { display: grid; grid-template-columns: 1.35fr 1fr; gap: var(--s-6); align-items: center; margin-bottom: var(--s-8); }
+    .vk-shot:nth-child(even) > figure { order: 2; }
+    .vk-shot figure { margin: 0; overflow: hidden; border: 1px solid var(--hairline); border-radius: 4px; background: #0d1117; }
+    .vk-shot img { display: block; width: 100%; height: auto; }
+    .vk-shot__n { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--vk-accent); }
+    .vk-shot__body h2 { margin: var(--s-2) 0 var(--s-3); font-family: var(--font-display); font-size: 27px; font-weight: 400; line-height: 1.2; }
+    .vk-shot__body p { color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+
+    .vk-block { margin: var(--s-9) 0; }
+    .vk-block__head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-6); padding-bottom: var(--s-3); border-bottom: 1px solid var(--hairline); }
+    .vk-block__head h2 { font-family: var(--font-display); font-size: var(--t-h2); font-weight: 400; letter-spacing: -.02em; }
+    .vk-tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+    .vk-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-6) var(--s-7); }
+    .vk-pillar h3 { font-size: 17px; font-weight: 650; }
+    .vk-pillar p { margin-top: var(--s-3); color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+
+    .vk-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+    .vk-step { padding: var(--s-5); border-left: 2px solid var(--vk-accent); background: var(--bg-soft); }
+    .vk-step__n { margin-bottom: var(--s-3); font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--vk-accent); }
+    .vk-step p { color: var(--ink-soft); font-size: var(--t-small); line-height: 1.65; }
+
+    .vk-measure { max-width: 760px; }
+    .vk-measure p { color: var(--ink-soft); font-size: 15px; line-height: 1.75; }
+    .vk-measure p + p { margin-top: var(--s-4); }
+    .vk-measure strong { color: var(--ink); }
+    .vk-measure code, .vk-intro code { padding: 2px 6px; border-radius: 3px; background: var(--bg-soft); font-family: var(--mono); font-size: 13px; }
+
+    .vk-table { width: 100%; margin: var(--s-5) 0; border-collapse: collapse; font-size: var(--t-small); }
+    .vk-table th { padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--hairline); font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; text-align: left; color: var(--muted); }
+    .vk-table td { padding: var(--s-3); border-bottom: 1px solid var(--hairline); color: var(--ink-soft); }
+    .vk-table tr:last-child td { border-bottom: 0; }
+    .vk-table code { background: none; padding: 0; color: var(--ink); }
+
+    .vk-vdoc { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--s-6); align-items: center; }
+    .vk-vdoc figure { margin: 0; overflow: hidden; border: 1px solid var(--hairline); border-radius: 4px; }
+    .vk-vdoc img { display: block; width: 100%; height: auto; }
+    .vk-vdoc p { color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+    .vk-vdoc p + p { margin-top: var(--s-4); }
+    .vk-vdoc strong { color: var(--ink); }
+
+    .vk-foot { padding-top: var(--s-6); border-top: 1px solid var(--hairline); }
+    .vk-foot p { max-width: 700px; color: var(--ink-soft); font-size: var(--t-small); line-height: 1.7; }
+    .vk-foot strong { color: var(--ink); }
+    .vk-mail { display: inline-block; margin-top: var(--s-4); font-size: var(--t-small); font-weight: 650; color: var(--vk-accent); }
+
+    @media (max-width: 900px) {
+      .vk-shot, .vk-vdoc { grid-template-columns: 1fr; }
+      .vk-shot:nth-child(even) > figure { order: 0; }
+      .vk-pillars, .vk-flow { grid-template-columns: 1fr; }
+      .vk-table { font-size: 13px; }
+    }
+  </style>
+</BaseLayout>
