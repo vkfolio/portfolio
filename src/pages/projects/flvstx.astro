@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const accent = '#0E8C9A';
+const accentSoft = '#DCF1F4';
+const accentInk = '#083A41';
+
+const specs = ['CLAP + VST3 + standalone', 'Rust · nih-plug · egui', 'Claude Agent SDK', 'Ollama, local or remote', '32 composer tools', 'Windows'];
+
+// The first two are captures of the running app at 2250x1350, showing one real composer turn.
+const shots = [
+  {
+    src: '/assets/flvstx/editor.jpg',
+    w: 1440, h: 864,
+    title: 'Ask for a change, read why it was made',
+    body: 'I told it the chorus melody felt flat. It read the chorus and the verse, rewrote the line a fourth higher as one rising arc built from the verse motif, filled the hats out to sixteenths, and then pointed at the next problem: chords and pad running under the bass. The notes in the piano roll are the ones it wrote.',
+  },
+  {
+    src: '/assets/flvstx/ollama.jpg',
+    w: 1440, h: 864,
+    title: 'Claude, or a model on your own machine',
+    body: 'The header switches between Claude and an Ollama server, local or across the network, with the model list read from that server and a Think switch for reasoning models. Each provider keeps its own conversation, so going back to Claude resumes where Claude left off. Local turns cost nothing and leave nothing.',
+  },
+  {
+    src: '/assets/flvstx/patcher.jpg',
+    w: 1440, h: 762,
+    title: 'Inside FL Studio, three ways out',
+    body: 'FL Studio has no MIDI effect slot, so the plugin routes live MIDI through Patcher, drags a layer straight onto a channel, or hands a whole song to a piano-roll import script. A built-in General MIDI synth means the song is audible before a single instrument is chosen.',
+  },
+];
+
+const pillars = [
+  {
+    title: 'The model decides, the engine plays',
+    body: 'A language model asked for raw notes writes stiff, plausible-looking MIDI. Here it decides form, harmony and motif, and a Rust rules engine realises them: voice-led chords, motif-developed melodies, bass that follows the kick, grooves with a pocket per style. Repeats are new performances, not copies, and sustained parts carry swells, pedal and 808 glides.',
+  },
+  {
+    title: 'Plans before it writes',
+    body: 'Producer mode reads the session and proposes a plan: key, form, and for every step the exact layer and section it will touch. Nothing changes until it is approved. Then each step goes to a specialist whose whole context is that craft: harmony and form, melody and topline, rhythm section, arrangement and mix.',
+  },
+  {
+    title: 'Enforced by the host, not asked for in a prompt',
+    body: 'A tool-use hook denies every write until the plan is approved, and denies a specialist writing outside its own layers. Progress is derived from a ledger of writes that actually landed, so the checklist cannot claim work nobody did. One checkpoint reverts a whole run, which is far more than undo can hold.',
+  },
+  {
+    title: 'The plugin is the source of truth',
+    body: 'The agent never holds the song. Every one of its 32 tools is a thin call back into the plugin\'s session over a local socket, the same operations the piano roll and the command line use. Edit a note by hand and the composer sees it on its next turn.',
+  },
+];
+---
+
+<BaseLayout
+  title="FLVSTX · Vignesh K"
+  description="A composer plugin for FL Studio: chat with Claude or a local Ollama model and get chords, melody, bass and drums written into an editable piano roll, with a producer mode that plans, asks, and delegates to specialists."
+>
+  <article class="fx shell" style={`--fx-accent:${accent};--fx-soft:${accentSoft};--fx-ink:${accentInk};`}>
+    <a class="fx-back" href="/projects/">← Projects</a>
+
+    <header class="fx-hero animate-fade-in-up">
+      <div class="fx-hero__meta">
+        <span class="fx-badge">Personal R&amp;D</span>
+        <span class="fx-dot">·</span>
+        <span>2026</span>
+        <span class="fx-dot">·</span>
+        <span>Music tools</span>
+      </div>
+      <h1>FLVSTX</h1>
+      <p class="fx-tagline">
+        A composer that lives inside FL Studio. Describe what you want and it writes
+        <span class="fx-em">chords, melody, bass, drums and eight more layer kinds</span> into a piano roll
+        you can edit, hear through built-in sounds, and drag straight onto your instruments.
+      </p>
+      <ul class="fx-specs" aria-label="At a glance">{specs.map((s) => <li>{s}</li>)}</ul>
+    </header>
+
+    <section class="fx-intro animate-fade-in-up delay-1">
+      <p>
+        Music models hand you finished audio you cannot open. A chat window hands you advice you still have
+        to play in. FLVSTX sits between the two: <strong>the output is MIDI in your own project</strong>, layer by
+        layer and section by section, written by something that can see the whole song and explain each
+        choice in a musician's terms.
+      </p>
+      <p class="fx-muted">
+        It is a CLAP and VST3 plugin plus a standalone app, written in Rust, with a small TypeScript sidecar
+        that runs the agent. Generation, playback, editing and export all work with no model at all; the
+        composer is the part that listens.
+      </p>
+    </section>
+
+    {shots.map((shot, i) => (
+      <section class="fx-shot animate-fade-in-up delay-1">
+        <figure>
+          <img src={shot.src} alt={shot.title} loading={i ? 'lazy' : 'eager'} width={shot.w} height={shot.h} />
+        </figure>
+        <div class="fx-shot__body">
+          <p class="fx-shot__n">{String(i + 1).padStart(2, '0')}</p>
+          <h2>{shot.title}</h2>
+          <p>{shot.body}</p>
+        </div>
+      </section>
+    ))}
+
+    <section class="fx-block animate-fade-in-up delay-1">
+      <div class="fx-block__head"><h2>What makes it different</h2></div>
+      <div class="fx-pillars">
+        {pillars.map((pillar) => (
+          <div class="fx-pillar"><h3>{pillar.title}</h3><p>{pillar.body}</p></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="fx-block animate-fade-in-up delay-1">
+      <div class="fx-block__head"><h2>How a turn runs</h2><span class="fx-tag">Three processes, one song</span></div>
+      <div class="fx-flow">
+        <div class="fx-step">
+          <p class="fx-step__n">Plugin · Rust</p>
+          <p>Holds the session, the piano roll, the synth and the undo history. Sends the message with a compact summary of the song, then answers the agent's tool calls by running the same operations the UI uses.</p>
+        </div>
+        <div class="fx-step">
+          <p class="fx-step__n">Sidecar · TypeScript</p>
+          <p>Runs the Claude Agent SDK session with the composer tools, the approval fence, the specialists and the ledger. It keeps no notes of its own: every read and write is a call back to the plugin.</p>
+        </div>
+        <div class="fx-step">
+          <p class="fx-step__n">Model · Claude or Ollama</p>
+          <p>Claude through the user's own login, or any tool-calling model on an Ollama server. The model picks the tools and the music; the engine turns its decisions into a performance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="fx-block animate-fade-in-up delay-1">
+      <div class="fx-block__head"><h2>The bug worth telling</h2><span class="fx-tag">Adding local models</span></div>
+      <div class="fx-story">
+        <p>
+          Ollama speaks the same API the agent runtime does, so pointing one at the other should have been
+          a base URL. The first local turn came back confident and wrong: the model described calling a
+          tool, in invented XML, and the song never changed.
+        </p>
+        <p>
+          The server log had the answer in one line: <code>truncating input prompt, limit=2050</code>. That
+          endpoint has no way to set a context window, so the composer's brief and all 32 tool definitions,
+          about ten thousand tokens, were being cut to the last two thousand. The model had never seen a
+          tool. It was improvising one from the user's sentence.
+        </p>
+        <p class="fx-muted">
+          The fix is a small bridge inside the sidecar that translates each request to Ollama's native chat
+          API, where the context window can be set and capped at what the model supports, and streams the
+          reply back in the shape the runtime expects. Tool calls, tool results and reasoning all round-trip,
+          and it is unit-tested against a stand-in server. The same turn then made a real tool call and the
+          key changed.
+        </p>
+      </div>
+    </section>
+
+    <footer class="fx-foot animate-fade-in-up delay-1">
+      <p>Version 1.3.1, running on my own machine in FL Studio 2026. The first two screenshots are the app after one real turn; the summary on screen is the model's, unedited.</p>
+      <a class="fx-mail" href="mailto:vignesh0702@gmail.com">Ask me about it → vignesh0702@gmail.com</a>
+    </footer>
+  </article>
+
+  <style>
+    .fx { padding: var(--s-8) 0 var(--s-12); max-width: 1000px; }
+    .fx-back { display: inline-block; margin-bottom: var(--s-8); font-size: var(--t-small); font-weight: 600; color: var(--muted); transition: color var(--ease); }
+    .fx-back:hover { color: var(--fx-accent); }
+
+    .fx-hero { padding-bottom: var(--s-8); border-bottom: 1px solid var(--hairline); margin-bottom: var(--s-8); }
+    .fx-hero__meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); font-size: var(--t-tiny); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .fx-dot { color: var(--hairline); }
+    .fx-badge { padding: 3px 10px; border-radius: 999px; background: var(--fx-soft); color: var(--fx-ink); letter-spacing: .04em; }
+    .fx-hero h1 { margin-bottom: var(--s-4); font-family: var(--mono); font-size: clamp(48px, 7vw, 88px); font-weight: 700; line-height: 1; letter-spacing: -.04em; }
+    .fx-tagline { max-width: 700px; font-size: clamp(18px, 2.4vw, 24px); line-height: 1.5; color: var(--ink-soft); }
+    .fx-em { color: var(--fx-accent); font-weight: 600; }
+    .fx-specs { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); margin-top: var(--s-6); padding: 0; list-style: none; }
+    .fx-specs li { padding: 5px 10px; border: 1px solid var(--hairline); border-radius: 3px; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+
+    .fx-intro { max-width: 720px; margin-bottom: var(--s-9); }
+    .fx-intro p { font-size: 17px; line-height: 1.75; color: var(--ink-soft); }
+    .fx-intro p + p { margin-top: var(--s-4); }
+    .fx-intro strong { color: var(--ink); }
+    .fx-muted { color: var(--muted); font-size: 15px; }
+
+    .fx-shot { display: grid; grid-template-columns: 1.35fr 1fr; gap: var(--s-6); align-items: center; margin-bottom: var(--s-8); }
+    .fx-shot:nth-child(odd) > figure { order: 2; }
+    .fx-shot figure { margin: 0; overflow: hidden; border: 1px solid var(--hairline); border-radius: 4px; background: #0d1117; }
+    .fx-shot img { display: block; width: 100%; height: auto; }
+    .fx-shot__n { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--fx-accent); }
+    .fx-shot__body h2 { margin: var(--s-2) 0 var(--s-3); font-family: var(--font-display); font-size: 27px; font-weight: 400; line-height: 1.2; }
+    .fx-shot__body p { color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+
+    .fx-block { margin: var(--s-9) 0; }
+    .fx-block__head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-6); padding-bottom: var(--s-3); border-bottom: 1px solid var(--hairline); }
+    .fx-block__head h2 { font-family: var(--font-display); font-size: var(--t-h2); font-weight: 400; letter-spacing: -.02em; }
+    .fx-tag { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+    .fx-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-6) var(--s-7); }
+    .fx-pillar h3 { font-size: 17px; font-weight: 650; }
+    .fx-pillar p { margin-top: var(--s-3); color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+
+    .fx-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+    .fx-step { padding: var(--s-5); border-left: 2px solid var(--fx-accent); background: var(--bg-soft); }
+    .fx-step__n { margin-bottom: var(--s-3); font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--fx-accent); }
+    .fx-step p { color: var(--ink-soft); font-size: var(--t-small); line-height: 1.65; }
+
+    .fx-story { max-width: 720px; }
+    .fx-story p { color: var(--ink-soft); font-size: 16px; line-height: 1.75; }
+    .fx-story p + p { margin-top: var(--s-4); }
+    .fx-story p.fx-muted { color: var(--muted); font-size: 15px; }
+    .fx-story code { padding: 2px 6px; border-radius: 3px; background: var(--bg-soft); font-family: var(--mono); font-size: 13px; }
+
+    .fx-foot { padding-top: var(--s-6); border-top: 1px solid var(--hairline); }
+    .fx-foot p { max-width: 700px; color: var(--ink-soft); font-size: var(--t-small); line-height: 1.7; }
+    .fx-mail { display: inline-block; margin-top: var(--s-4); font-size: var(--t-small); font-weight: 650; color: var(--fx-accent); }
+
+    @media (max-width: 900px) {
+      .fx-shot { grid-template-columns: 1fr; }
+      .fx-shot:nth-child(odd) > figure { order: 0; }
+      .fx-pillars, .fx-flow { grid-template-columns: 1fr; }
+    }
+  </style>
+</BaseLayout>

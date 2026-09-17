@@ -1,0 +1,15 @@
+{
+  "slug": "flvstx",
+  "title": "FLVSTX",
+  "desc": "A composer that lives inside FL Studio: chat with Claude or a local Ollama model and get chords, melody, bass and drums written into a piano roll you can edit, hear and drag onto your instruments.",
+  "group": "personal",
+  "groupLabel": "Personal R&D · music tools",
+  "accent": "#0E8C9A",
+  "accentSoft": "#DCF1F4",
+  "accentInk": "#083A41",
+  "year": "2026",
+  "role": "Solo: engine, plugin, agent",
+  "links": [
+    { "label": "Overview", "href": "/projects/flvstx" }
+  ]
+}
