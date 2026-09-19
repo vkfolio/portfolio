@@ -115,6 +115,20 @@ const snap = [
     ))}
 
     <section class="vk-block animate-fade-in-up delay-1">
+      <div class="vk-block__head"><h2>The fit, checked outside the tool</h2><span class="vk-tag">Point clouds, three views</span></div>
+      <div class="vk-plots">
+        <figure>
+          <img src="/assets/wrapx/fit-nonrigid.jpg" alt="Non-rigid fit shown as point clouds from the front, the side, and the head in profile" loading="lazy" width="1650" height="990" />
+          <figcaption><strong>After the non-rigid fit.</strong> The template’s vertices (red) sit on the scan (grey) from the front, from the side, and in profile at the head, including the ears, nose and lips, where thin features sit closest together.</figcaption>
+        </figure>
+        <figure>
+          <img src="/assets/wrapx/fit-rest-morph.jpg" alt="Base mesh in grey against the fitted morph in red, from the front, the side, and the head in profile" loading="lazy" width="1650" height="990" />
+          <figcaption><strong>Back in the rest pose, as a morph.</strong> Grey is the untouched base and red is the fitted shape: shorter arms, different head proportions, the same vertex order. Because the topology never changes, the result works as a morph target on the original mesh.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="vk-block animate-fade-in-up delay-1">
       <div class="vk-block__head"><h2>What makes it different</h2></div>
       <div class="vk-pillars">
         {pillars.map((pillar) => (
@@ -313,6 +327,12 @@ const snap = [
     .vk-vdoc { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--s-6); align-items: center; }
     .vk-vdoc figure { margin: 0; overflow: hidden; border: 1px solid var(--hairline); border-radius: 4px; }
     .vk-vdoc img { display: block; width: 100%; height: auto; }
+
+    .vk-plots { display: grid; gap: var(--s-7); }
+    .vk-plots figure { margin: 0; }
+    .vk-plots img { display: block; width: 100%; height: auto; border: 1px solid var(--hairline); border-radius: 4px; background: #fff; }
+    .vk-plots figcaption { max-width: 760px; margin-top: var(--s-3); color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
+    .vk-plots figcaption strong { color: var(--ink); }
     .vk-vdoc p { color: var(--ink-soft); font-size: 15px; line-height: 1.7; }
     .vk-vdoc p + p { margin-top: var(--s-4); }
     .vk-vdoc strong { color: var(--ink); }
